@@ -1,40 +1,176 @@
 {
-  "MeshSprite|2023-07-10T15:03:57.385Z|07065": {
+  "MeshSprite|2023-07-10T08:13:43.110Z|04159": {
     "ƒ.MeshSprite": {
-      "idResource": "MeshSprite|2023-07-10T15:03:57.385Z|07065",
+      "idResource": "MeshSprite|2023-07-10T08:13:43.110Z|04159",
       "name": "MeshSprite",
       "type": "MeshSprite"
     }
   },
-  "Material|2023-07-10T15:03:46.269Z|09824": {
+  "Material|2023-07-10T08:14:39.821Z|78772": {
     "ƒ.Material": {
       "name": "ShaderLitTextured",
-      "idResource": "Material|2023-07-10T15:03:46.269Z|09824",
+      "idResource": "Material|2023-07-10T08:14:39.821Z|78772",
       "shader": "ShaderLitTextured",
       "coat": {
         "ƒ.CoatTextured": {
-          "color": "[1, 1, 1, 1]",
-          "idTexture": "TextureImage|2023-07-10T15:03:02.642Z|88387"
+          "color": "[1, 1, 1, 1]"
         }
       }
     }
   },
-  "TextureImage|2023-07-10T15:03:02.642Z|88387": {
+  "Material|2023-07-10T08:22:09.091Z|69919": {
+    "ƒ.Material": {
+      "name": "ShaderLitTextured",
+      "idResource": "Material|2023-07-10T08:22:09.091Z|69919",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2023-07-10T08:22:01.714Z|32320"
+        }
+      }
+    }
+  },
+  "TextureImage|2023-07-10T08:22:01.714Z|32320": {
     "ƒ.TextureImage": {
+      "url": "Sprites\\Background\\challengeroom.png",
       "type": "TextureImage",
       "Texture": {
-        "idResource": "TextureImage|2023-07-10T15:03:02.642Z|88387",
+        "idResource": "TextureImage|2023-07-10T08:22:01.714Z|32320",
+        "name": "Sprites\\Background\\challengeroom.png",
+        "mipmap": "CRISP"
+      }
+    }
+  },
+  "Material|2023-07-10T08:18:39.377Z|36762": {
+    "ƒ.Material": {
+      "name": "SpinniMat",
+      "idResource": "Material|2023-07-10T08:18:39.377Z|36762",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2023-07-10T08:13:08.204Z|66004"
+        }
+      }
+    }
+  },
+  "TextureImage|2023-07-10T08:13:08.204Z|66004": {
+    "ƒ.TextureImage": {
+      "url": "Sprites\\Enemy\\spinni.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2023-07-10T08:13:08.204Z|66004",
+        "name": "Sprites\\Enemy\\spinni.png",
+        "mipmap": "CRISP"
+      }
+    }
+  },
+  "AnimationSprite|2023-07-10T08:07:17.465Z|24092": {
+    "ƒ.AnimationSprite": {
+      "idResource": "AnimationSprite|2023-07-10T08:07:17.465Z|24092",
+      "idTexture": "TextureImage|2023-07-10T08:13:08.204Z|66004",
+      "frames": 4,
+      "wrapAfter": 4,
+      "start": "[0, 0]",
+      "size": "[18, 14]",
+      "next": "[18, 0]",
+      "wrap": "[0, 0]",
+      "Animation": {
+        "idResource": "AnimationSprite|2023-07-10T08:07:17.465Z|24092",
+        "name": "SpinniWalk",
+        "labels": {},
+        "events": {},
+        "framesPerSecond": 8,
+        "animationStructure": {}
+      }
+    }
+  },
+  "AnimationSprite|2023-07-10T09:42:49.770Z|85945": {
+    "ƒ.AnimationSprite": {
+      "idResource": "AnimationSprite|2023-07-10T09:42:49.770Z|85945",
+      "idTexture": "TextureImage|2023-07-10T09:42:44.768Z|52801",
+      "frames": 5,
+      "wrapAfter": 5,
+      "start": "[0, 0]",
+      "size": "[32, 24]",
+      "next": "[32, 0]",
+      "wrap": "[0, 0]",
+      "Animation": {
+        "idResource": "AnimationSprite|2023-07-10T09:42:49.770Z|85945",
+        "name": "AvatarIdleR",
+        "labels": {},
+        "events": {},
+        "framesPerSecond": 8,
+        "animationStructure": {}
+      }
+    }
+  },
+  "TextureImage|2023-07-10T09:42:44.768Z|52801": {
+    "ƒ.TextureImage": {
+      "url": "Sprites\\Avatar\\ranged_complete_sprite_sheeV2..png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2023-07-10T09:42:44.768Z|52801",
         "name": "Sprites\\Avatar\\ranged_complete_sprite_sheeV2..png",
         "mipmap": "CRISP"
       }
     }
   },
-  "Graph|2023-07-10T15:01:02.149Z|04264": {
+  "Material|2023-07-10T09:45:00.166Z|72964": {
+    "ƒ.Material": {
+      "name": "ShaderLitTextured",
+      "idResource": "Material|2023-07-10T09:45:00.166Z|72964",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2023-07-10T09:42:44.768Z|52801"
+        }
+      }
+    }
+  },
+  "Graph|2023-07-10T07:46:10.116Z|97670": {
     "ƒ.Graph": {
-      "name": "Test2D",
+      "name": "NewGraph",
       "active": true,
       "components": {},
       "children": [
+        {
+          "ƒ.Node": {
+            "name": "Light",
+            "active": true,
+            "components": {
+              "ComponentLight": [
+                {
+                  "ƒ.ComponentLight": {
+                    "pivot": {
+                      "translation": "[0, 0, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[1, 1, 1]"
+                    },
+                    "light": {
+                      "ƒ.LightAmbient": {
+                        "color": "[1, 1, 1, 1]"
+                      }
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ]
+            },
+            "children": []
+          }
+        },
+        {
+          "ƒ.GraphInstance": {
+            "deserializeFromSource": true,
+            "name": "Spinni",
+            "idSource": "Graph|2023-07-10T14:26:01.539Z|19119"
+          }
+        },
         {
           "ƒ.Node": {
             "name": "Avatar",
@@ -49,7 +185,7 @@
                     "ComponentMesh": [
                       {
                         "ƒ.ComponentMesh": {
-                          "idMesh": "MeshSprite|2023-07-10T15:03:57.385Z|07065",
+                          "idMesh": "MeshSprite|2023-07-10T08:13:43.110Z|04159",
                           "pivot": {
                             "translation": "[0, 0, 0]",
                             "rotation": "[0, 0, 0]",
@@ -61,6 +197,21 @@
                         }
                       }
                     ],
+                    "ComponentAnimator": [
+                      {
+                        "ƒ.ComponentAnimator": {
+                          "Component": {
+                            "active": true
+                          },
+                          "idAnimation": "AnimationSprite|2023-07-10T09:42:49.770Z|85945",
+                          "playmode": "loop",
+                          "quantization": "discrete",
+                          "scale": 1,
+                          "scaleWithGameTime": true,
+                          "animateInEditor": true
+                        }
+                      }
+                    ],
                     "ComponentMaterial": [
                       {
                         "ƒ.ComponentMaterial": {
@@ -68,18 +219,73 @@
                           "clrPrimary": "[1, 1, 1, 1]",
                           "clrSecondary": "[1, 1, 1, 1]",
                           "pivot": {
-                            "translation": "[0, 0]",
+                            "translation": "[0.5, 0]",
                             "rotation": 0,
                             "scaling": "[0.125, 0.1666666716337204]"
                           },
                           "Component": {
                             "active": true
                           },
-                          "idMaterial": "Material|2023-07-10T15:03:46.269Z|09824"
+                          "idMaterial": "Material|2023-07-10T09:45:00.166Z|72964"
                         }
                       }
                     ],
-                    "ComponentAnimator": []
+                    "ComponentTransform": [
+                      {
+                        "ƒ.ComponentTransform": {
+                          "local": {
+                            "translation": "[1, 0, 0]",
+                            "rotation": "[0, 0, 0]",
+                            "scaling": "[1, 1, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          }
+                        }
+                      }
+                    ],
+                    "ComponentController": [
+                      {
+                        "Script.ComponentController": {
+                          "active": true,
+                          "message": "CustomComponentScript added to meeeee "
+                        }
+                      }
+                    ]
+                  },
+                  "children": []
+                }
+              },
+              {
+                "ƒ.Node": {
+                  "name": "Camera",
+                  "active": true,
+                  "components": {
+                    "ComponentCamera": [
+                      {
+                        "ƒ.ComponentCamera": {
+                          "backgroundColor": {
+                            "r": 0.8,
+                            "g": 0.3607843137254902,
+                            "b": 0.3607843137254902,
+                            "a": 1
+                          },
+                          "backgroundEnabled": true,
+                          "projection": "central",
+                          "fieldOfView": 85,
+                          "direction": "diagonal",
+                          "aspect": 1,
+                          "pivot": {
+                            "translation": "[0, 0, 0]",
+                            "rotation": "[0, 0, 0]",
+                            "scaling": "[1, 1, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          }
+                        }
+                      }
+                    ]
                   },
                   "children": []
                 }
@@ -88,28 +294,87 @@
           }
         }
       ],
-      "idResource": "Graph|2023-07-10T15:01:02.149Z|04264",
+      "idResource": "Graph|2023-07-10T07:46:10.116Z|97670",
       "type": "Graph"
     }
   },
-  "AnimationSprite|2023-07-10T15:07:54.580Z|83317": {
+  "AnimationSprite|2023-07-10T09:47:30.915Z|37177": {
     "ƒ.AnimationSprite": {
-      "idResource": "AnimationSprite|2023-07-10T15:07:54.580Z|83317",
-      "idTexture": "TextureImage|2023-07-10T15:03:02.642Z|88387",
-      "frames": 25,
+      "idResource": "AnimationSprite|2023-07-10T09:47:30.915Z|37177",
+      "idTexture": "TextureImage|2023-07-10T09:42:44.768Z|52801",
+      "frames": 5,
       "wrapAfter": 5,
-      "start": "[0, 0]",
-      "size": "[80, 80]",
-      "next": "[80, 0]",
+      "start": "[0, 48]",
+      "size": "[32, 24]",
+      "next": "[32, 0]",
       "wrap": "[0, 80]",
       "Animation": {
-        "idResource": "AnimationSprite|2023-07-10T15:07:54.580Z|83317",
-        "name": "AnimationSprite",
+        "idResource": "AnimationSprite|2023-07-10T09:47:30.915Z|37177",
+        "name": "AvatarIdleL",
         "labels": {},
         "events": {},
         "framesPerSecond": 25,
         "animationStructure": {}
       }
+    }
+  },
+  "Graph|2023-07-10T14:26:01.539Z|19119": {
+    "ƒ.Graph": {
+      "name": "Spinni",
+      "active": true,
+      "components": {
+        "ComponentMesh": [
+          {
+            "ƒ.ComponentMesh": {
+              "idMesh": "MeshSprite|2023-07-10T08:13:43.110Z|04159",
+              "pivot": {
+                "translation": "[0, 0, 0]",
+                "rotation": "[0, 0, 0]",
+                "scaling": "[0.5, 0.5, 0.5]"
+              },
+              "Component": {
+                "active": true
+              }
+            }
+          }
+        ],
+        "ComponentMaterial": [
+          {
+            "ƒ.ComponentMaterial": {
+              "sortForAlpha": false,
+              "clrPrimary": "[1, 1, 1, 1]",
+              "clrSecondary": "[1, 1, 1, 1]",
+              "pivot": {
+                "translation": "[0, 0]",
+                "rotation": 0,
+                "scaling": "[0.25, 1]"
+              },
+              "Component": {
+                "active": true
+              },
+              "idMaterial": "Material|2023-07-10T08:18:39.377Z|36762"
+            }
+          }
+        ],
+        "ComponentAnimator": [
+          {
+            "ƒ.ComponentAnimator": {
+              "Component": {
+                "active": true
+              },
+              "idAnimation": "AnimationSprite|2023-07-10T08:07:17.465Z|24092",
+              "playmode": "loop",
+              "quantization": "discrete",
+              "scale": 1,
+              "scaleWithGameTime": true,
+              "animateInEditor": false
+            }
+          }
+        ]
+      },
+      "children": [],
+      "idResource": "Graph|2023-07-10T14:26:01.539Z|19119",
+      "type": "Graph"
     }
   }
 }

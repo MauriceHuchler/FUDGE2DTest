@@ -1,4 +1,4 @@
-namespace Script {
+namespace TestGame {
   import ƒ = FudgeCore;
   ƒ.Debug.info("Main Program Template running!");
 
@@ -9,8 +9,9 @@ namespace Script {
     viewport = _event.detail;
 
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
-    // ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
+    ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
   }
+
 
   function update(_event: Event): void {
     // ƒ.Physics.simulate();  // if physics is included and used
