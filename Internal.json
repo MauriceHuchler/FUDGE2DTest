@@ -1,0 +1,115 @@
+{
+  "MeshSprite|2023-07-10T15:03:57.385Z|07065": {
+    "ƒ.MeshSprite": {
+      "idResource": "MeshSprite|2023-07-10T15:03:57.385Z|07065",
+      "name": "MeshSprite",
+      "type": "MeshSprite"
+    }
+  },
+  "Material|2023-07-10T15:03:46.269Z|09824": {
+    "ƒ.Material": {
+      "name": "ShaderLitTextured",
+      "idResource": "Material|2023-07-10T15:03:46.269Z|09824",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2023-07-10T15:03:02.642Z|88387"
+        }
+      }
+    }
+  },
+  "TextureImage|2023-07-10T15:03:02.642Z|88387": {
+    "ƒ.TextureImage": {
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2023-07-10T15:03:02.642Z|88387",
+        "name": "Sprites\\Avatar\\ranged_complete_sprite_sheeV2..png",
+        "mipmap": "CRISP"
+      }
+    }
+  },
+  "Graph|2023-07-10T15:01:02.149Z|04264": {
+    "ƒ.Graph": {
+      "name": "Test2D",
+      "active": true,
+      "components": {},
+      "children": [
+        {
+          "ƒ.Node": {
+            "name": "Avatar",
+            "active": true,
+            "components": {},
+            "children": [
+              {
+                "ƒ.Node": {
+                  "name": "Sprite",
+                  "active": true,
+                  "components": {
+                    "ComponentMesh": [
+                      {
+                        "ƒ.ComponentMesh": {
+                          "idMesh": "MeshSprite|2023-07-10T15:03:57.385Z|07065",
+                          "pivot": {
+                            "translation": "[0, 0, 0]",
+                            "rotation": "[0, 0, 0]",
+                            "scaling": "[1, 1, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          }
+                        }
+                      }
+                    ],
+                    "ComponentMaterial": [
+                      {
+                        "ƒ.ComponentMaterial": {
+                          "sortForAlpha": false,
+                          "clrPrimary": "[1, 1, 1, 1]",
+                          "clrSecondary": "[1, 1, 1, 1]",
+                          "pivot": {
+                            "translation": "[0, 0]",
+                            "rotation": 0,
+                            "scaling": "[0.125, 0.1666666716337204]"
+                          },
+                          "Component": {
+                            "active": true
+                          },
+                          "idMaterial": "Material|2023-07-10T15:03:46.269Z|09824"
+                        }
+                      }
+                    ],
+                    "ComponentAnimator": []
+                  },
+                  "children": []
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "idResource": "Graph|2023-07-10T15:01:02.149Z|04264",
+      "type": "Graph"
+    }
+  },
+  "AnimationSprite|2023-07-10T15:07:54.580Z|83317": {
+    "ƒ.AnimationSprite": {
+      "idResource": "AnimationSprite|2023-07-10T15:07:54.580Z|83317",
+      "idTexture": "TextureImage|2023-07-10T15:03:02.642Z|88387",
+      "frames": 25,
+      "wrapAfter": 5,
+      "start": "[0, 0]",
+      "size": "[80, 80]",
+      "next": "[80, 0]",
+      "wrap": "[0, 80]",
+      "Animation": {
+        "idResource": "AnimationSprite|2023-07-10T15:07:54.580Z|83317",
+        "name": "AnimationSprite",
+        "labels": {},
+        "events": {},
+        "framesPerSecond": 25,
+        "animationStructure": {}
+      }
+    }
+  }
+}
