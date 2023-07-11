@@ -12,7 +12,6 @@ var Avatar;
         ACTION[ACTION["WALK"] = 1] = "WALK";
     })(ACTION = Avatar_1.ACTION || (Avatar_1.ACTION = {}));
     class Avatar extends ƒAid.NodeSprite {
-        animIdle;
         constructor() {
             super("Avatar");
             this.addComponent(new ƒ.ComponentTransform);
@@ -27,74 +26,69 @@ var Script;
     var ƒ = FudgeCore;
     ƒ.Project.registerScriptNamespace(Script); // Register the namespace to FUDGE for serialization
     class ComponentController extends ƒ.ComponentScript {
-        // Register the script as component for use in the editor via drag&drop
-        static iSubclass = ƒ.Component.registerSubclass(ComponentController);
-        // Properties may be mutated by users in the editor via the automatically created user interface
-        message = "CustomComponentScript added to ";
-        walkSpeed;
-        cmpAnimator;
-        avatarSpeed;
         constructor() {
             super();
+            // Properties may be mutated by users in the editor via the automatically created user interface
+            this.message = "CustomComponentScript added to ";
+            // Activate the functions of this component as response to events
+            this.hndEvent = (_event) => {
+                switch (_event.type) {
+                    case "componentAdd" /* COMPONENT_ADD */:
+                        ƒ.Debug.log(this.message, this.node);
+                        break;
+                    case "componentRemove" /* COMPONENT_REMOVE */:
+                        this.removeEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
+                        this.removeEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
+                        break;
+                    case "nodeDeserialized" /* NODE_DESERIALIZED */:
+                        // if deserialized the node is now fully reconstructed and access to all its components and children is possible
+                        ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.update);
+                        this.cmpAnimator = this.node.getComponent(ƒ.ComponentAnimator);
+                        break;
+                }
+            };
+            this.update = (_event) => {
+                let deltaTime = ƒ.Loop.timeFrameGame / 1000;
+                let inputDirection = ƒ.Vector3.ZERO();
+                let x = 0;
+                let y = 0;
+                if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.A, ƒ.KEYBOARD_CODE.ARROW_LEFT])) {
+                    x = -1;
+                    // this.cmpAnimator.animation = 
+                }
+                if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D, ƒ.KEYBOARD_CODE.ARROW_RIGHT])) {
+                    x = 1;
+                }
+                if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.W, ƒ.KEYBOARD_CODE.ARROW_UP]))
+                    y = 1;
+                if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.S, ƒ.KEYBOARD_CODE.ARROW_DOWN]))
+                    y = -1;
+                // else
+                //   this.node.mtxLocal.translation = ƒ.Vector3.ZERO();
+                inputDirection = new ƒ.Vector3(x * this.walkSpeed, y * this.walkSpeed, 0);
+                if (x != 0 || y != 0) {
+                    inputDirection.normalize();
+                }
+                this.node.mtxLocal.translate(ƒ.Vector3.SCALE(inputDirection, deltaTime));
+                // protected reduceMutator(_mutator: ƒ.Mutator): void {
+                //   // delete properties that should not be mutated
+                //   // undefined properties and private fields (#) will not be included by default
+                // }
+            };
             // Don't start when running in editor
             if (ƒ.Project.mode == ƒ.MODE.EDITOR)
                 return;
             // Avatar Stats
             this.walkSpeed = 0.9;
-            ƒ.Project.get;
             //get Components
             // Listen to this component being added to or removed from a node
             this.addEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
             this.addEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
             this.addEventListener("nodeDeserialized" /* NODE_DESERIALIZED */, this.hndEvent);
         }
-        // Activate the functions of this component as response to events
-        hndEvent = (_event) => {
-            switch (_event.type) {
-                case "componentAdd" /* COMPONENT_ADD */:
-                    ƒ.Debug.log(this.message, this.node);
-                    break;
-                case "componentRemove" /* COMPONENT_REMOVE */:
-                    this.removeEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
-                    this.removeEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
-                    break;
-                case "nodeDeserialized" /* NODE_DESERIALIZED */:
-                    // if deserialized the node is now fully reconstructed and access to all its components and children is possible
-                    ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.update);
-                    this.cmpAnimator = this.node.getComponent(ƒ.ComponentAnimator);
-                    break;
-            }
-        };
-        update = (_event) => {
-            let deltaTime = ƒ.Loop.timeFrameGame / 1000;
-            let inputDirection = ƒ.Vector3.ZERO();
-            let x = 0;
-            let y = 0;
-            if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.A, ƒ.KEYBOARD_CODE.ARROW_LEFT])) {
-                x = -1;
-                this.cmpAnimator.animation =
-                ;
-            }
-            if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D, ƒ.KEYBOARD_CODE.ARROW_RIGHT])) {
-                x = 1;
-            }
-            if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.W, ƒ.KEYBOARD_CODE.ARROW_UP]))
-                y = 1;
-            if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.S, ƒ.KEYBOARD_CODE.ARROW_DOWN]))
-                y = -1;
-            // else
-            //   this.node.mtxLocal.translation = ƒ.Vector3.ZERO();
-            inputDirection = new ƒ.Vector3(x * this.walkSpeed, y * this.walkSpeed, 0);
-            if (x != 0 || y != 0) {
-                inputDirection.normalize();
-            }
-            this.node.mtxLocal.translate(ƒ.Vector3.SCALE(inputDirection, deltaTime));
-            // protected reduceMutator(_mutator: ƒ.Mutator): void {
-            //   // delete properties that should not be mutated
-            //   // undefined properties and private fields (#) will not be included by default
-            // }
-        };
     }
+    // Register the script as component for use in the editor via drag&drop
+    ComponentController.iSubclass = ƒ.Component.registerSubclass(ComponentController);
     Script.ComponentController = ComponentController;
 })(Script || (Script = {}));
 var Script;
@@ -102,12 +96,25 @@ var Script;
     var ƒ = FudgeCore;
     ƒ.Project.registerScriptNamespace(Script); // Register the namespace to FUDGE for serialization
     class CustomComponentScript extends ƒ.ComponentScript {
-        // Register the script as component for use in the editor via drag&drop
-        static iSubclass = ƒ.Component.registerSubclass(CustomComponentScript);
-        // Properties may be mutated by users in the editor via the automatically created user interface
-        message = "CustomComponentScript added to ";
         constructor() {
             super();
+            // Properties may be mutated by users in the editor via the automatically created user interface
+            this.message = "CustomComponentScript added to ";
+            // Activate the functions of this component as response to events
+            this.hndEvent = (_event) => {
+                switch (_event.type) {
+                    case "componentAdd" /* COMPONENT_ADD */:
+                        ƒ.Debug.log(this.message, this.node);
+                        break;
+                    case "componentRemove" /* COMPONENT_REMOVE */:
+                        this.removeEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
+                        this.removeEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
+                        break;
+                    case "nodeDeserialized" /* NODE_DESERIALIZED */:
+                        // if deserialized the node is now fully reconstructed and access to all its components and children is possible
+                        break;
+                }
+            };
             // Don't start when running in editor
             if (ƒ.Project.mode == ƒ.MODE.EDITOR)
                 return;
@@ -116,22 +123,9 @@ var Script;
             this.addEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
             this.addEventListener("nodeDeserialized" /* NODE_DESERIALIZED */, this.hndEvent);
         }
-        // Activate the functions of this component as response to events
-        hndEvent = (_event) => {
-            switch (_event.type) {
-                case "componentAdd" /* COMPONENT_ADD */:
-                    ƒ.Debug.log(this.message, this.node);
-                    break;
-                case "componentRemove" /* COMPONENT_REMOVE */:
-                    this.removeEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
-                    this.removeEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
-                    break;
-                case "nodeDeserialized" /* NODE_DESERIALIZED */:
-                    // if deserialized the node is now fully reconstructed and access to all its components and children is possible
-                    break;
-            }
-        };
     }
+    // Register the script as component for use in the editor via drag&drop
+    CustomComponentScript.iSubclass = ƒ.Component.registerSubclass(CustomComponentScript);
     Script.CustomComponentScript = CustomComponentScript;
 })(Script || (Script = {}));
 var TestGame;
