@@ -6,10 +6,10 @@ declare namespace Script {
         walkSpeed: number;
         private isFacingRight;
         private cmpAnimator;
-        readonly avatarWalkL: ƒ.AnimationSprite;
-        readonly avatarWalkR: ƒ.AnimationSprite;
-        readonly avatarIdleL: ƒ.AnimationSprite;
-        readonly avatarIdleR: ƒ.AnimationSprite;
+        private avatarWalkL;
+        private avatarWalkR;
+        private avatarIdleL;
+        private avatarIdleR;
         private currentAnimation;
         constructor();
         hndEvent: (_event: Event) => void;

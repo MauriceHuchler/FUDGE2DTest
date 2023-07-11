@@ -15,10 +15,10 @@ namespace Script {
         private cmpAnimator: ƒ.ComponentAnimator;
 
         //Animation Sprites
-        readonly avatarWalkL: ƒ.AnimationSprite
-        readonly avatarWalkR: ƒ.AnimationSprite
-        readonly avatarIdleL: ƒ.AnimationSprite
-        readonly avatarIdleR: ƒ.AnimationSprite
+        private avatarWalkL: ƒ.AnimationSprite
+        private avatarWalkR: ƒ.AnimationSprite
+        private avatarIdleL: ƒ.AnimationSprite
+        private avatarIdleR: ƒ.AnimationSprite
 
 
         private currentAnimation: ƒ.AnimationSprite;
