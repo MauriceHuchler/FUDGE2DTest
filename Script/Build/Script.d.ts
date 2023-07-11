@@ -1,33 +1,15 @@
-declare namespace Avatar {
-    import ƒAid = FudgeAid;
-    enum ACTION {
-        IDLE = 0,
-        WALK = 1
-    }
-    class Avatar extends ƒAid.NodeSprite {
-        private animIdle;
-        constructor();
-        update(_deltaTime: number): void;
-    }
-}
 declare namespace Script {
     import ƒ = FudgeCore;
     class CharacterController extends ƒ.ComponentScript {
         static readonly iSubclass: number;
-    }
-}
-declare namespace Script {
-    import ƒ = FudgeCore;
-    class ComponentController extends ƒ.ComponentScript {
-        static readonly iSubclass: number;
         message: string;
-        private walkSpeed;
+        walkSpeed: number;
+        private isFacingRight;
         private cmpAnimator;
-        readonly avatarSpeed: number;
-        private avatarIdleL;
-        private avatarIdleR;
-        private avatarWalkL;
-        private avatarWalkR;
+        readonly avatarWalkL: ƒ.AnimationSprite;
+        readonly avatarWalkR: ƒ.AnimationSprite;
+        readonly avatarIdleL: ƒ.AnimationSprite;
+        readonly avatarIdleR: ƒ.AnimationSprite;
         private currentAnimation;
         constructor();
         hndEvent: (_event: Event) => void;

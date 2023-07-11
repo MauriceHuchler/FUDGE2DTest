@@ -6,18 +6,6 @@
       "type": "MeshSprite"
     }
   },
-  "Material|2023-07-10T08:14:39.821Z|78772": {
-    "ƒ.Material": {
-      "name": "ShaderLitTextured",
-      "idResource": "Material|2023-07-10T08:14:39.821Z|78772",
-      "shader": "ShaderLitTextured",
-      "coat": {
-        "ƒ.CoatTextured": {
-          "color": "[1, 1, 1, 1]"
-        }
-      }
-    }
-  },
   "Material|2023-07-10T08:22:09.091Z|69919": {
     "ƒ.Material": {
       "name": "ShaderTilesLit",
@@ -132,27 +120,7 @@
         "name": "AvatarWalkL",
         "labels": {},
         "events": {},
-        "framesPerSecond": 8,
-        "animationStructure": {}
-      }
-    }
-  },
-  "AnimationSprite|2023-07-11T07:15:57.069Z|94525": {
-    "ƒ.AnimationSprite": {
-      "idResource": "AnimationSprite|2023-07-11T07:15:57.069Z|94525",
-      "idTexture": "TextureImage|2023-07-10T09:42:44.768Z|52801",
-      "frames": 8,
-      "wrapAfter": 8,
-      "start": "[0, 24]",
-      "size": "[32, 24]",
-      "next": "[32, 0]",
-      "wrap": "[0, 80]",
-      "Animation": {
-        "idResource": "AnimationSprite|2023-07-11T07:15:57.069Z|94525",
-        "name": "AvatarWalkR",
-        "labels": {},
-        "events": {},
-        "framesPerSecond": 8,
+        "framesPerSecond": 12,
         "animationStructure": {}
       }
     }
@@ -170,9 +138,9 @@
       "type": "MeshPyramid"
     }
   },
-  "Graph|2023-07-11T09:13:02.785Z|98749": {
+  "Graph|2023-07-11T12:20:51.671Z|06879": {
     "ƒ.Graph": {
-      "name": "MainScene",
+      "name": "NewGraph",
       "active": true,
       "components": {},
       "children": [
@@ -209,7 +177,7 @@
                           "clrPrimary": "[1, 1, 1, 1]",
                           "clrSecondary": "[1, 1, 1, 1]",
                           "pivot": {
-                            "translation": "[0.125, 0.3333333432674408]",
+                            "translation": "[0.375, 0.3333333432674408]",
                             "rotation": 0,
                             "scaling": "[0.125, 0.1666666716337204]"
                           },
@@ -235,11 +203,12 @@
                         }
                       }
                     ],
-                    "ComponentController": [
+                    "CharacterController": [
                       {
-                        "Script.ComponentController": {
-                          "active": true,
-                          "message": "CustomComponentScript added to "
+                        "Script.CharacterController": {
+                          "active": false,
+                          "message": "CustomComponentScript added to ",
+                          "walkSpeed": "3"
                         }
                       }
                     ],
@@ -249,7 +218,305 @@
                           "local": {
                             "translation": "[0, 0, 0]",
                             "rotation": "[0, 0, 0]",
+                            "scaling": "[0.5, 0.5, 0.5]"
+                          },
+                          "Component": {
+                            "active": true
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "children": []
+                }
+              }
+            ]
+          }
+        },
+        {
+          "ƒ.Node": {
+            "name": "Background",
+            "active": true,
+            "components": {},
+            "children": [
+              {
+                "ƒ.Node": {
+                  "name": "Sprite",
+                  "active": true,
+                  "components": {
+                    "ComponentMesh": [
+                      {
+                        "ƒ.ComponentMesh": {
+                          "idMesh": "MeshSprite|2023-07-10T08:13:43.110Z|04159",
+                          "pivot": {
+                            "translation": "[0, 0, 0]",
+                            "rotation": "[0, 0, 0]",
                             "scaling": "[1, 1, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          }
+                        }
+                      }
+                    ],
+                    "ComponentMaterial": [
+                      {
+                        "ƒ.ComponentMaterial": {
+                          "sortForAlpha": false,
+                          "clrPrimary": "[1, 1, 1, 1]",
+                          "clrSecondary": "[1, 1, 1, 1]",
+                          "pivot": {
+                            "translation": "[0, 0]",
+                            "rotation": 0,
+                            "scaling": "[1, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          },
+                          "idMaterial": "Material|2023-07-10T08:22:09.091Z|69919"
+                        }
+                      }
+                    ],
+                    "ComponentTransform": [
+                      {
+                        "ƒ.ComponentTransform": {
+                          "local": {
+                            "translation": "[0, 0, -0.009999999776482582]",
+                            "rotation": "[0, 0, 0]",
+                            "scaling": "[5, 5, 5]"
+                          },
+                          "Component": {
+                            "active": true
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "children": []
+                }
+              }
+            ]
+          }
+        },
+        {
+          "ƒ.Node": {
+            "name": "Spawn Points",
+            "active": true,
+            "components": {},
+            "children": [
+              {
+                "ƒ.Node": {
+                  "name": "SpawnPoint0",
+                  "active": true,
+                  "components": {
+                    "ComponentMesh": [
+                      {
+                        "ƒ.ComponentMesh": {
+                          "idMesh": "MeshSprite|2023-07-10T08:13:43.110Z|04159",
+                          "pivot": {
+                            "translation": "[0, 0, 0]",
+                            "rotation": "[0, 0, 0]",
+                            "scaling": "[1, 1, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          }
+                        }
+                      }
+                    ],
+                    "ComponentMaterial": [
+                      {
+                        "ƒ.ComponentMaterial": {
+                          "sortForAlpha": false,
+                          "clrPrimary": "[1, 1, 1, 1]",
+                          "clrSecondary": "[1, 1, 1, 1]",
+                          "pivot": {
+                            "translation": "[0, 0]",
+                            "rotation": 0,
+                            "scaling": "[1, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          },
+                          "idMaterial": "Material|2023-07-11T14:34:50.606Z|02022"
+                        }
+                      }
+                    ],
+                    "ComponentTransform": [
+                      {
+                        "ƒ.ComponentTransform": {
+                          "local": {
+                            "translation": "[2, 2, 0.009999999776482582]",
+                            "rotation": "[0, 0, 0]",
+                            "scaling": "[0.10000000149011612, 0.10000000149011612, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "children": []
+                }
+              },
+              {
+                "ƒ.Node": {
+                  "name": "SpawnPoint1",
+                  "active": true,
+                  "components": {
+                    "ComponentMesh": [
+                      {
+                        "ƒ.ComponentMesh": {
+                          "idMesh": "MeshSprite|2023-07-10T08:13:43.110Z|04159",
+                          "pivot": {
+                            "translation": "[0, 0, 0]",
+                            "rotation": "[0, 0, 0]",
+                            "scaling": "[1, 1, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          }
+                        }
+                      }
+                    ],
+                    "ComponentMaterial": [
+                      {
+                        "ƒ.ComponentMaterial": {
+                          "sortForAlpha": false,
+                          "clrPrimary": "[1, 1, 1, 1]",
+                          "clrSecondary": "[1, 1, 1, 1]",
+                          "pivot": {
+                            "translation": "[0, 0]",
+                            "rotation": 0,
+                            "scaling": "[1, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          },
+                          "idMaterial": "Material|2023-07-11T14:34:50.606Z|02022"
+                        }
+                      }
+                    ],
+                    "ComponentTransform": [
+                      {
+                        "ƒ.ComponentTransform": {
+                          "local": {
+                            "translation": "[-2, 2, 0.009999999776482582]",
+                            "rotation": "[0, 0, 0]",
+                            "scaling": "[0.10000000149011612, 0.10000000149011612, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "children": []
+                }
+              },
+              {
+                "ƒ.Node": {
+                  "name": "SpawnPoint2",
+                  "active": true,
+                  "components": {
+                    "ComponentMesh": [
+                      {
+                        "ƒ.ComponentMesh": {
+                          "idMesh": "MeshSprite|2023-07-10T08:13:43.110Z|04159",
+                          "pivot": {
+                            "translation": "[0, 0, 0]",
+                            "rotation": "[0, 0, 0]",
+                            "scaling": "[1, 1, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          }
+                        }
+                      }
+                    ],
+                    "ComponentMaterial": [
+                      {
+                        "ƒ.ComponentMaterial": {
+                          "sortForAlpha": false,
+                          "clrPrimary": "[1, 1, 1, 1]",
+                          "clrSecondary": "[1, 1, 1, 1]",
+                          "pivot": {
+                            "translation": "[0, 0]",
+                            "rotation": 0,
+                            "scaling": "[1, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          },
+                          "idMaterial": "Material|2023-07-11T14:34:50.606Z|02022"
+                        }
+                      }
+                    ],
+                    "ComponentTransform": [
+                      {
+                        "ƒ.ComponentTransform": {
+                          "local": {
+                            "translation": "[-2, -2, 0.009999999776482582]",
+                            "rotation": "[0, 0, 0]",
+                            "scaling": "[0.10000000149011612, 0.10000000149011612, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "children": []
+                }
+              },
+              {
+                "ƒ.Node": {
+                  "name": "SpawnPoint3",
+                  "active": true,
+                  "components": {
+                    "ComponentMesh": [
+                      {
+                        "ƒ.ComponentMesh": {
+                          "idMesh": "MeshSprite|2023-07-10T08:13:43.110Z|04159",
+                          "pivot": {
+                            "translation": "[0, 0, 0]",
+                            "rotation": "[0, 0, 0]",
+                            "scaling": "[1, 1, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          }
+                        }
+                      }
+                    ],
+                    "ComponentMaterial": [
+                      {
+                        "ƒ.ComponentMaterial": {
+                          "sortForAlpha": false,
+                          "clrPrimary": "[1, 1, 1, 1]",
+                          "clrSecondary": "[1, 1, 1, 1]",
+                          "pivot": {
+                            "translation": "[0, 0]",
+                            "rotation": 0,
+                            "scaling": "[1, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          },
+                          "idMaterial": "Material|2023-07-11T14:34:50.606Z|02022"
+                        }
+                      }
+                    ],
+                    "ComponentTransform": [
+                      {
+                        "ƒ.ComponentTransform": {
+                          "local": {
+                            "translation": "[2, -2, 0.009999999776482582]",
+                            "rotation": "[0, 0, 0]",
+                            "scaling": "[0.10000000149011612, 0.10000000149011612, 1]"
                           },
                           "Component": {
                             "active": true
@@ -265,15 +532,62 @@
           }
         }
       ],
-      "idResource": "Graph|2023-07-11T09:13:02.785Z|98749",
+      "idResource": "Graph|2023-07-11T12:20:51.671Z|06879",
       "type": "Graph"
     }
   },
-  "ParticleSystem|2023-07-11T09:27:22.688Z|25744": {
-    "ƒ.ParticleSystem": {
-      "idResource": "ParticleSystem|2023-07-11T09:27:22.688Z|25744",
-      "name": "ParticleSystem",
-      "data": {}
+  "AnimationSprite|2023-07-11T07:15:57.069Z|94525": {
+    "ƒ.AnimationSprite": {
+      "idResource": "AnimationSprite|2023-07-11T07:15:57.069Z|94525",
+      "idTexture": "TextureImage|2023-07-10T09:42:44.768Z|52801",
+      "frames": 8,
+      "wrapAfter": 8,
+      "start": "[0, 24]",
+      "size": "[32, 24]",
+      "next": "[32, 0]",
+      "wrap": "[0, 80]",
+      "Animation": {
+        "idResource": "AnimationSprite|2023-07-11T07:15:57.069Z|94525",
+        "name": "AvatarWalkR",
+        "labels": {},
+        "events": {},
+        "framesPerSecond": 12,
+        "animationStructure": {}
+      }
+    }
+  },
+  "MeshPolygon|2023-07-11T12:20:54.306Z|03162": {
+    "ƒ.MeshPolygon": {
+      "idResource": "MeshPolygon|2023-07-11T12:20:54.306Z|03162",
+      "name": "MeshPolygon",
+      "type": "MeshPolygon",
+      "shape": {
+        "ƒ.Vector2": [
+          "[-1, -1]",
+          "[1, -1]",
+          "[0, 1]"
+        ]
+      },
+      "fitTexture": true
+    }
+  },
+  "MeshCube|2023-07-11T12:23:21.878Z|85547": {
+    "ƒ.MeshCube": {
+      "idResource": "MeshCube|2023-07-11T12:23:21.878Z|85547",
+      "name": "MyCube",
+      "type": "MeshCube"
+    }
+  },
+  "Material|2023-07-11T14:34:50.606Z|02022": {
+    "ƒ.Material": {
+      "name": "SpawnPoint",
+      "idResource": "Material|2023-07-11T14:34:50.606Z|02022",
+      "shader": "ShaderLit",
+      "coat": {
+        "ƒ.CoatColored": {
+          "color": "[1, 0, 0, 0.39]"
+        }
+      }
     }
   }
 }
