@@ -20,7 +20,7 @@
   },
   "Material|2023-07-10T08:22:09.091Z|69919": {
     "ƒ.Material": {
-      "name": "ShaderLitTextured",
+      "name": "ShaderTilesLit",
       "idResource": "Material|2023-07-10T08:22:09.091Z|69919",
       "shader": "ShaderLitTextured",
       "coat": {
@@ -42,19 +42,6 @@
       }
     }
   },
-  "Material|2023-07-10T08:18:39.377Z|36762": {
-    "ƒ.Material": {
-      "name": "SpinniMat",
-      "idResource": "Material|2023-07-10T08:18:39.377Z|36762",
-      "shader": "ShaderLitTextured",
-      "coat": {
-        "ƒ.CoatTextured": {
-          "color": "[1, 1, 1, 1]",
-          "idTexture": "TextureImage|2023-07-10T08:13:08.204Z|66004"
-        }
-      }
-    }
-  },
   "TextureImage|2023-07-10T08:13:08.204Z|66004": {
     "ƒ.TextureImage": {
       "url": "Sprites\\Enemy\\spinni.png",
@@ -63,26 +50,6 @@
         "idResource": "TextureImage|2023-07-10T08:13:08.204Z|66004",
         "name": "Sprites\\Enemy\\spinni.png",
         "mipmap": "CRISP"
-      }
-    }
-  },
-  "AnimationSprite|2023-07-10T08:07:17.465Z|24092": {
-    "ƒ.AnimationSprite": {
-      "idResource": "AnimationSprite|2023-07-10T08:07:17.465Z|24092",
-      "idTexture": "TextureImage|2023-07-10T08:13:08.204Z|66004",
-      "frames": 4,
-      "wrapAfter": 4,
-      "start": "[0, 0]",
-      "size": "[18, 14]",
-      "next": "[18, 0]",
-      "wrap": "[0, 0]",
-      "Animation": {
-        "idResource": "AnimationSprite|2023-07-10T08:07:17.465Z|24092",
-        "name": "SpinniWalk",
-        "labels": {},
-        "events": {},
-        "framesPerSecond": 8,
-        "animationStructure": {}
       }
     }
   },
@@ -119,7 +86,7 @@
   },
   "Material|2023-07-10T09:45:00.166Z|72964": {
     "ƒ.Material": {
-      "name": "ShaderLitTextured",
+      "name": "ShaderAvatarLit",
       "idResource": "Material|2023-07-10T09:45:00.166Z|72964",
       "shader": "ShaderLitTextured",
       "coat": {
@@ -130,9 +97,69 @@
       }
     }
   },
+  "AnimationSprite|2023-07-10T09:47:30.915Z|37177": {
+    "ƒ.AnimationSprite": {
+      "idResource": "AnimationSprite|2023-07-10T09:47:30.915Z|37177",
+      "idTexture": "TextureImage|2023-07-10T09:42:44.768Z|52801",
+      "frames": 5,
+      "wrapAfter": 5,
+      "start": "[0, 48]",
+      "size": "[32, 24]",
+      "next": "[32, 0]",
+      "wrap": "[0, 80]",
+      "Animation": {
+        "idResource": "AnimationSprite|2023-07-10T09:47:30.915Z|37177",
+        "name": "AvatarIdleL",
+        "labels": {},
+        "events": {},
+        "framesPerSecond": 8,
+        "animationStructure": {}
+      }
+    }
+  },
+  "AnimationSprite|2023-07-11T07:12:58.488Z|07846": {
+    "ƒ.AnimationSprite": {
+      "idResource": "AnimationSprite|2023-07-11T07:12:58.488Z|07846",
+      "idTexture": "TextureImage|2023-07-10T09:42:44.768Z|52801",
+      "frames": 8,
+      "wrapAfter": 8,
+      "start": "[0, 72]",
+      "size": "[32, 24]",
+      "next": "[32, 0]",
+      "wrap": "[0, 80]",
+      "Animation": {
+        "idResource": "AnimationSprite|2023-07-11T07:12:58.488Z|07846",
+        "name": "AvatarWalkL",
+        "labels": {},
+        "events": {},
+        "framesPerSecond": 8,
+        "animationStructure": {}
+      }
+    }
+  },
+  "AnimationSprite|2023-07-11T07:15:57.069Z|94525": {
+    "ƒ.AnimationSprite": {
+      "idResource": "AnimationSprite|2023-07-11T07:15:57.069Z|94525",
+      "idTexture": "TextureImage|2023-07-10T09:42:44.768Z|52801",
+      "frames": 8,
+      "wrapAfter": 8,
+      "start": "[0, 24]",
+      "size": "[32, 24]",
+      "next": "[32, 0]",
+      "wrap": "[0, 80]",
+      "Animation": {
+        "idResource": "AnimationSprite|2023-07-11T07:15:57.069Z|94525",
+        "name": "AvatarWalkR",
+        "labels": {},
+        "events": {},
+        "framesPerSecond": 8,
+        "animationStructure": {}
+      }
+    }
+  },
   "Graph|2023-07-10T07:46:10.116Z|97670": {
     "ƒ.Graph": {
-      "name": "NewGraph",
+      "name": "MainScene",
       "active": true,
       "components": {},
       "children": [
@@ -162,13 +189,6 @@
               ]
             },
             "children": []
-          }
-        },
-        {
-          "ƒ.GraphInstance": {
-            "deserializeFromSource": true,
-            "name": "Spinni",
-            "idSource": "Graph|2023-07-10T14:26:01.539Z|19119"
           }
         },
         {
@@ -203,7 +223,7 @@
                           "Component": {
                             "active": true
                           },
-                          "idAnimation": "AnimationSprite|2023-07-10T09:42:49.770Z|85945",
+                          "idAnimation": "AnimationSprite|2023-07-10T09:47:30.915Z|37177",
                           "playmode": "loop",
                           "quantization": "discrete",
                           "scale": 1,
@@ -219,7 +239,7 @@
                           "clrPrimary": "[1, 1, 1, 1]",
                           "clrSecondary": "[1, 1, 1, 1]",
                           "pivot": {
-                            "translation": "[0.5, 0]",
+                            "translation": "[0, 0.3333333432674408]",
                             "rotation": 0,
                             "scaling": "[0.125, 0.1666666716337204]"
                           },
@@ -276,7 +296,7 @@
                           "direction": "diagonal",
                           "aspect": 1,
                           "pivot": {
-                            "translation": "[0, 0, 0]",
+                            "translation": "[5, 0, 0]",
                             "rotation": "[0, 0, 0]",
                             "scaling": "[1, 1, 1]"
                           },
@@ -295,85 +315,6 @@
         }
       ],
       "idResource": "Graph|2023-07-10T07:46:10.116Z|97670",
-      "type": "Graph"
-    }
-  },
-  "AnimationSprite|2023-07-10T09:47:30.915Z|37177": {
-    "ƒ.AnimationSprite": {
-      "idResource": "AnimationSprite|2023-07-10T09:47:30.915Z|37177",
-      "idTexture": "TextureImage|2023-07-10T09:42:44.768Z|52801",
-      "frames": 5,
-      "wrapAfter": 5,
-      "start": "[0, 48]",
-      "size": "[32, 24]",
-      "next": "[32, 0]",
-      "wrap": "[0, 80]",
-      "Animation": {
-        "idResource": "AnimationSprite|2023-07-10T09:47:30.915Z|37177",
-        "name": "AvatarIdleL",
-        "labels": {},
-        "events": {},
-        "framesPerSecond": 25,
-        "animationStructure": {}
-      }
-    }
-  },
-  "Graph|2023-07-10T14:26:01.539Z|19119": {
-    "ƒ.Graph": {
-      "name": "Spinni",
-      "active": true,
-      "components": {
-        "ComponentMesh": [
-          {
-            "ƒ.ComponentMesh": {
-              "idMesh": "MeshSprite|2023-07-10T08:13:43.110Z|04159",
-              "pivot": {
-                "translation": "[0, 0, 0]",
-                "rotation": "[0, 0, 0]",
-                "scaling": "[0.5, 0.5, 0.5]"
-              },
-              "Component": {
-                "active": true
-              }
-            }
-          }
-        ],
-        "ComponentMaterial": [
-          {
-            "ƒ.ComponentMaterial": {
-              "sortForAlpha": false,
-              "clrPrimary": "[1, 1, 1, 1]",
-              "clrSecondary": "[1, 1, 1, 1]",
-              "pivot": {
-                "translation": "[0, 0]",
-                "rotation": 0,
-                "scaling": "[0.25, 1]"
-              },
-              "Component": {
-                "active": true
-              },
-              "idMaterial": "Material|2023-07-10T08:18:39.377Z|36762"
-            }
-          }
-        ],
-        "ComponentAnimator": [
-          {
-            "ƒ.ComponentAnimator": {
-              "Component": {
-                "active": true
-              },
-              "idAnimation": "AnimationSprite|2023-07-10T08:07:17.465Z|24092",
-              "playmode": "loop",
-              "quantization": "discrete",
-              "scale": 1,
-              "scaleWithGameTime": true,
-              "animateInEditor": false
-            }
-          }
-        ]
-      },
-      "children": [],
-      "idResource": "Graph|2023-07-10T14:26:01.539Z|19119",
       "type": "Graph"
     }
   }

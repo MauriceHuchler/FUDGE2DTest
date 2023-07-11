@@ -18,6 +18,11 @@ declare namespace Script {
         private walkSpeed;
         private cmpAnimator;
         readonly avatarSpeed: number;
+        private avatarIdleL;
+        private avatarIdleR;
+        private avatarWalkL;
+        private avatarWalkR;
+        private currentAnimation;
         constructor();
         hndEvent: (_event: Event) => void;
         update: (_event: Event) => void;

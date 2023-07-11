@@ -44,6 +44,8 @@ var Script;
                         // if deserialized the node is now fully reconstructed and access to all its components and children is possible
                         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.update);
                         this.cmpAnimator = this.node.getComponent(ƒ.ComponentAnimator);
+                        this.avatarWalkR = ƒ.Project.getResourcesByName("AvatarWalkR")[0];
+                        console.log(this.avatarWalkR);
                         break;
                 }
             };
@@ -54,7 +56,6 @@ var Script;
                 let y = 0;
                 if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.A, ƒ.KEYBOARD_CODE.ARROW_LEFT])) {
                     x = -1;
-                    // this.cmpAnimator.animation = 
                 }
                 if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D, ƒ.KEYBOARD_CODE.ARROW_RIGHT])) {
                     x = 1;
@@ -65,11 +66,19 @@ var Script;
                     y = -1;
                 // else
                 //   this.node.mtxLocal.translation = ƒ.Vector3.ZERO();
-                inputDirection = new ƒ.Vector3(x * this.walkSpeed, y * this.walkSpeed, 0);
+                inputDirection = new ƒ.Vector3(x, y, 0);
                 if (x != 0 || y != 0) {
                     inputDirection.normalize();
                 }
-                this.node.mtxLocal.translate(ƒ.Vector3.SCALE(inputDirection, deltaTime));
+                //check face direction
+                if (x > 0) {
+                    this.currentAnimation = this.avatarWalkR;
+                }
+                else if (x < 0) {
+                    this.currentAnimation = this.avatarWalkL;
+                }
+                this.cmpAnimator.animation = this.currentAnimation;
+                this.node.mtxLocal.translate(ƒ.Vector3.SCALE(inputDirection, deltaTime * this.walkSpeed));
                 // protected reduceMutator(_mutator: ƒ.Mutator): void {
                 //   // delete properties that should not be mutated
                 //   // undefined properties and private fields (#) will not be included by default
@@ -79,8 +88,14 @@ var Script;
             if (ƒ.Project.mode == ƒ.MODE.EDITOR)
                 return;
             // Avatar Stats
-            this.walkSpeed = 0.9;
+            this.walkSpeed = 2.5;
             //get Components
+            //get resources
+            this.avatarIdleL = ƒ.Project.getResourcesByName("AvatarIdleL")[0];
+            this.avatarIdleR = ƒ.Project.getResourcesByName("AvatarIdleR")[0];
+            this.avatarWalkL = ƒ.Project.getResourcesByName("AvatarWalkL")[0];
+            console.log(this.avatarWalkL);
+            this.currentAnimation = this.avatarIdleR;
             // Listen to this component being added to or removed from a node
             this.addEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
             this.addEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
