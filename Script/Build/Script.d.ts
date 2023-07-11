@@ -12,6 +12,12 @@ declare namespace Avatar {
 }
 declare namespace Script {
     import ƒ = FudgeCore;
+    class CharacterController extends ƒ.ComponentScript {
+        static readonly iSubclass: number;
+    }
+}
+declare namespace Script {
+    import ƒ = FudgeCore;
     class ComponentController extends ƒ.ComponentScript {
         static readonly iSubclass: number;
         message: string;
@@ -29,7 +35,6 @@ declare namespace Script {
     }
 }
 declare namespace Script {
-    import ƒ = FudgeCore;
     class CustomComponentScript extends ƒ.ComponentScript {
         static readonly iSubclass: number;
         message: string;

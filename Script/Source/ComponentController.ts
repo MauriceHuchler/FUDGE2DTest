@@ -37,8 +37,10 @@ namespace Script {
       this.avatarIdleL = <ƒ.AnimationSprite>ƒ.Project.getResourcesByName("AvatarIdleL")[0];
       this.avatarIdleR = <ƒ.AnimationSprite>ƒ.Project.getResourcesByName("AvatarIdleR")[0];
       this.avatarWalkL = <ƒ.AnimationSprite>ƒ.Project.getResourcesByName("AvatarWalkL")[0];
+      this.avatarWalkR = <ƒ.AnimationSprite>ƒ.Project.getResourcesByName("AvatarWalkR")[0];
 
-      console.log(this.avatarWalkL);
+      let b = ƒ.Project.getResourcesByName("MeshPyramid")[0];
+      console.log(b);
 
       this.currentAnimation = this.avatarIdleR;
       // Listen to this component being added to or removed from a node
@@ -61,9 +63,6 @@ namespace Script {
           // if deserialized the node is now fully reconstructed and access to all its components and children is possible
           ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, this.update);
           this.cmpAnimator = this.node.getComponent(ƒ.ComponentAnimator);
-          this.avatarWalkR = <ƒ.AnimationSprite>ƒ.Project.getResourcesByName("AvatarWalkR")[0];
-          console.log(this.avatarWalkR);
-
           break;
       }
     }

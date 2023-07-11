@@ -1,6 +1,5 @@
 namespace Script {
-  import ƒ = FudgeCore;
-  ƒ.Project.registerScriptNamespace(Script);  // Register the namespace to FUDGE for serialization
+    // Register the namespace to FUDGE for serialization
 
   export class CustomComponentScript extends ƒ.ComponentScript {
     // Register the script as component for use in the editor via drag&drop

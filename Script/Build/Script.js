@@ -24,6 +24,15 @@ var Avatar;
 var Script;
 (function (Script) {
     var ƒ = FudgeCore;
+    ƒ.Project.registerScriptNamespace(Script);
+    class CharacterController extends ƒ.ComponentScript {
+    }
+    CharacterController.iSubclass = ƒ.Component.registerSubclass(CharacterController);
+    Script.CharacterController = CharacterController;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
+    var ƒ = FudgeCore;
     ƒ.Project.registerScriptNamespace(Script); // Register the namespace to FUDGE for serialization
     class ComponentController extends ƒ.ComponentScript {
         constructor() {
@@ -44,8 +53,6 @@ var Script;
                         // if deserialized the node is now fully reconstructed and access to all its components and children is possible
                         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.update);
                         this.cmpAnimator = this.node.getComponent(ƒ.ComponentAnimator);
-                        this.avatarWalkR = ƒ.Project.getResourcesByName("AvatarWalkR")[0];
-                        console.log(this.avatarWalkR);
                         break;
                 }
             };
@@ -94,7 +101,9 @@ var Script;
             this.avatarIdleL = ƒ.Project.getResourcesByName("AvatarIdleL")[0];
             this.avatarIdleR = ƒ.Project.getResourcesByName("AvatarIdleR")[0];
             this.avatarWalkL = ƒ.Project.getResourcesByName("AvatarWalkL")[0];
-            console.log(this.avatarWalkL);
+            this.avatarWalkR = ƒ.Project.getResourcesByName("AvatarWalkR")[0];
+            let b = ƒ.Project.getResourcesByName("MeshPyramid")[0];
+            console.log(b);
             this.currentAnimation = this.avatarIdleR;
             // Listen to this component being added to or removed from a node
             this.addEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
@@ -108,8 +117,7 @@ var Script;
 })(Script || (Script = {}));
 var Script;
 (function (Script) {
-    var ƒ = FudgeCore;
-    ƒ.Project.registerScriptNamespace(Script); // Register the namespace to FUDGE for serialization
+    // Register the namespace to FUDGE for serialization
     class CustomComponentScript extends ƒ.ComponentScript {
         constructor() {
             super();
