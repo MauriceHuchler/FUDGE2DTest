@@ -2,24 +2,27 @@ namespace Script {
     import ƒ = FudgeCore;
     ƒ.Project.registerScriptNamespace(Script);
 
-    export class ComponentHealth extends ƒ.ComponentScript {
-        public static readonly iSubclass: number = ƒ.Component.registerSubclass(ComponentHealth);
+    export class ComponentEnemy extends ƒ.ComponentScript {
+        public static readonly iSubclass: number = ƒ.Component.registerSubclass(ComponentEnemy);
 
-        private maxHealth: number
-        public health: Entity.Health;
+        private enemy: Entity.Enemy;
+        public walkSpeed: number;
 
         constructor() {
             super();
-
+            // Don't start when running in editor
             if (ƒ.Project.mode == ƒ.MODE.EDITOR)
                 return;
 
-            this.maxHealth = 5;
-            this.health = new Entity.Health(this.maxHealth)
 
+
+            // Listen to this component being added to or removed from a node
             this.addEventListener(ƒ.EVENT.COMPONENT_ADD, this.hndEvent);
             this.addEventListener(ƒ.EVENT.COMPONENT_REMOVE, this.hndEvent);
             this.addEventListener(ƒ.EVENT.NODE_DESERIALIZED, this.hndEvent);
+            ƒ.Project.addEventListener(ƒ.EVENT.RESOURCES_LOADED, this.hndEvent);
+            ƒ.Project.addEventListener("GraphReady", <EventListener>this.setTarget);
+
         }
 
         public hndEvent = (_event: Event): void => {
@@ -33,18 +36,24 @@ namespace Script {
                 case ƒ.EVENT.NODE_DESERIALIZED:
                     // if deserialized the node is now fully reconstructed and access to all its components and children is possible
                     break;
+                case ƒ.EVENT.RESOURCES_LOADED:
+
+
+                    break;
+
             }
         }
 
-        public getDamage(_damage: number, _node: ƒ.Node) {
-            this.health.getDamage(_damage);
-            if (this.health.currentHealth <= 0) {
-                let parent = _node.getParent();
-                if (parent != null) {
-                    parent.removeChild(_node);
-                }
-                // delete Node
-            }
+        public setTarget = (_event: CustomEvent): void => {
+            this.enemy = new Entity.Enemy(this.walkSpeed, this.node.cmpTransform);
+            this.enemy.target = TestGame.graph.getChildrenByName("Avatar")[0].getChildrenByName("Sprite")[0];
+            ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, this.update);
+        }
+
+
+        public update = (): void => {
+            this.enemy.walkTowards();
         }
     }
+
 }

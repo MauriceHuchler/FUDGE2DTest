@@ -66,8 +66,6 @@ namespace Script {
                     this.avatarIdleL = <ƒ.AnimationSprite>ƒ.Project.getResourcesByName("AvatarIdleL")[0];
                     this.avatarIdleR = <ƒ.AnimationSprite>ƒ.Project.getResourcesByName("AvatarIdleR")[0];
                     this.avatarWalkR = <ƒ.AnimationSprite>ƒ.Project.getResourcesByName("AvatarWalkR")[0];
-                    let b = ƒ.Project.getResourcesByName("MeshCube")[0];
-                    console.log(b);
                     break;
             }
         }
@@ -79,10 +77,10 @@ namespace Script {
             let x = 0;
             let y = 0;
 
-            if(ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.G])){
+            if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.G])) {
                 let health = this.node.getComponent(ComponentHealth);
-                console.log(health);
-                // health.health.getDamage(1);
+                // console.log(health);
+                health.getDamage(5, this.node);
             }
 
             if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.A, ƒ.KEYBOARD_CODE.ARROW_LEFT])) {

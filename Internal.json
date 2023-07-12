@@ -150,6 +150,39 @@
       }
     }
   },
+  "Material|2023-07-12T14:43:04.759Z|28988": {
+    "ƒ.Material": {
+      "name": "ShaderSpinniLit",
+      "idResource": "Material|2023-07-12T14:43:04.759Z|28988",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2023-07-10T08:13:08.204Z|66004"
+        }
+      }
+    }
+  },
+  "AnimationSprite|2023-07-12T14:43:58.501Z|23577": {
+    "ƒ.AnimationSprite": {
+      "idResource": "AnimationSprite|2023-07-12T14:43:58.501Z|23577",
+      "idTexture": "TextureImage|2023-07-10T08:13:08.204Z|66004",
+      "frames": 4,
+      "wrapAfter": 4,
+      "start": "[0, 0]",
+      "size": "[18, 14]",
+      "next": "[17.999998092651367, 0]",
+      "wrap": "[0, 0]",
+      "Animation": {
+        "idResource": "AnimationSprite|2023-07-12T14:43:58.501Z|23577",
+        "name": "SpinniWalkR",
+        "labels": {},
+        "events": {},
+        "framesPerSecond": 8,
+        "animationStructure": {}
+      }
+    }
+  },
   "Graph|2023-07-11T12:20:51.671Z|06879": {
     "ƒ.Graph": {
       "name": "NewGraph",
@@ -189,7 +222,7 @@
                           "clrPrimary": "[1, 1, 1, 1]",
                           "clrSecondary": "[1, 1, 1, 1]",
                           "pivot": {
-                            "translation": "[0.375, 0.3333333432674408]",
+                            "translation": "[0.5, 0.3333333432674408]",
                             "rotation": 0,
                             "scaling": "[0.125, 0.1666666716337204]"
                           },
@@ -241,6 +274,31 @@
                       {
                         "Script.ComponentHealth": {
                           "active": true
+                        }
+                      }
+                    ],
+                    "ComponentCamera": [
+                      {
+                        "ƒ.ComponentCamera": {
+                          "backgroundColor": {
+                            "r": 0,
+                            "g": 0,
+                            "b": 0,
+                            "a": 1
+                          },
+                          "backgroundEnabled": true,
+                          "projection": "central",
+                          "fieldOfView": 90,
+                          "direction": "diagonal",
+                          "aspect": 1,
+                          "pivot": {
+                            "translation": "[0, 0, 6]",
+                            "rotation": "[0, 180, 0]",
+                            "scaling": "[1, 1, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          }
                         }
                       }
                     ]
@@ -547,6 +605,95 @@
                           "Component": {
                             "active": true
                           }
+                        }
+                      }
+                    ]
+                  },
+                  "children": []
+                }
+              }
+            ]
+          }
+        },
+        {
+          "ƒ.Node": {
+            "name": "Enemy",
+            "active": true,
+            "components": {
+              "ComponentTransform": [
+                {
+                  "ƒ.ComponentTransform": {
+                    "local": {
+                      "translation": "[2, 0, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[0.3999999165534973, 0.3999999761581421, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ],
+              "ComponentEnemy": [
+                {
+                  "Script.ComponentEnemy": {
+                    "active": true,
+                    "walkSpeed": 1.9999999999999991
+                  }
+                }
+              ]
+            },
+            "children": [
+              {
+                "ƒ.Node": {
+                  "name": "Sprite",
+                  "active": true,
+                  "components": {
+                    "ComponentMesh": [
+                      {
+                        "ƒ.ComponentMesh": {
+                          "idMesh": "MeshSprite|2023-07-10T08:13:43.110Z|04159",
+                          "pivot": {
+                            "translation": "[0, 0, 0]",
+                            "rotation": "[0, 0, 0]",
+                            "scaling": "[1, 1, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          }
+                        }
+                      }
+                    ],
+                    "ComponentMaterial": [
+                      {
+                        "ƒ.ComponentMaterial": {
+                          "sortForAlpha": false,
+                          "clrPrimary": "[1, 1, 1, 1]",
+                          "clrSecondary": "[1, 1, 1, 1]",
+                          "pivot": {
+                            "translation": "[0.4999999403953552, 0]",
+                            "rotation": 0,
+                            "scaling": "[0.25, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          },
+                          "idMaterial": "Material|2023-07-12T14:43:04.759Z|28988"
+                        }
+                      }
+                    ],
+                    "ComponentAnimator": [
+                      {
+                        "ƒ.ComponentAnimator": {
+                          "Component": {
+                            "active": true
+                          },
+                          "idAnimation": "AnimationSprite|2023-07-12T14:43:58.501Z|23577",
+                          "playmode": "loop",
+                          "quantization": "discrete",
+                          "scale": 1,
+                          "scaleWithGameTime": true,
+                          "animateInEditor": true
                         }
                       }
                     ]
