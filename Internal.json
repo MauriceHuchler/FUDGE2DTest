@@ -189,7 +189,7 @@
                           "clrPrimary": "[1, 1, 1, 1]",
                           "clrSecondary": "[1, 1, 1, 1]",
                           "pivot": {
-                            "translation": "[0.25, 0.3333333432674408]",
+                            "translation": "[0.375, 0.3333333432674408]",
                             "rotation": 0,
                             "scaling": "[0.125, 0.1666666716337204]"
                           },
@@ -219,8 +219,7 @@
                       {
                         "Script.CharacterController": {
                           "active": false,
-                          "message": "CustomComponentScript added to ",
-                          "walkSpeed": "3"
+                          "message": "CustomComponentScript added to "
                         }
                       }
                     ],
@@ -235,6 +234,13 @@
                           "Component": {
                             "active": true
                           }
+                        }
+                      }
+                    ],
+                    "ComponentHealth": [
+                      {
+                        "Script.ComponentHealth": {
+                          "active": true
                         }
                       }
                     ]
@@ -300,6 +306,14 @@
                           "Component": {
                             "active": true
                           }
+                        }
+                      }
+                    ],
+                    "ComponentHealth": [
+                      {
+                        "Script.ComponentHealth": {
+                          "active": true,
+                          "maxHealth": 5
                         }
                       }
                     ]
