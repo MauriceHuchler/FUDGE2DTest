@@ -79,6 +79,12 @@ namespace Script {
             let x = 0;
             let y = 0;
 
+            if(ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.G])){
+                let health = this.node.getComponent(ComponentHealth);
+                console.log(health);
+                // health.health.getDamage(1);
+            }
+
             if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.A, ƒ.KEYBOARD_CODE.ARROW_LEFT])) {
                 x = -1;
                 this.isFacingRight = false;

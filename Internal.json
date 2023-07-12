@@ -138,6 +138,18 @@
       "type": "MeshPyramid"
     }
   },
+  "Material|2023-07-11T14:34:50.606Z|02022": {
+    "ƒ.Material": {
+      "name": "SpawnPoint",
+      "idResource": "Material|2023-07-11T14:34:50.606Z|02022",
+      "shader": "ShaderLit",
+      "coat": {
+        "ƒ.CoatColored": {
+          "color": "[1, 0, 0, 0.39]"
+        }
+      }
+    }
+  },
   "Graph|2023-07-11T12:20:51.671Z|06879": {
     "ƒ.Graph": {
       "name": "NewGraph",
@@ -177,7 +189,7 @@
                           "clrPrimary": "[1, 1, 1, 1]",
                           "clrSecondary": "[1, 1, 1, 1]",
                           "pivot": {
-                            "translation": "[0.375, 0.3333333432674408]",
+                            "translation": "[0.25, 0.3333333432674408]",
                             "rotation": 0,
                             "scaling": "[0.125, 0.1666666716337204]"
                           },
@@ -576,18 +588,6 @@
       "idResource": "MeshCube|2023-07-11T12:23:21.878Z|85547",
       "name": "MyCube",
       "type": "MeshCube"
-    }
-  },
-  "Material|2023-07-11T14:34:50.606Z|02022": {
-    "ƒ.Material": {
-      "name": "SpawnPoint",
-      "idResource": "Material|2023-07-11T14:34:50.606Z|02022",
-      "shader": "ShaderLit",
-      "coat": {
-        "ƒ.CoatColored": {
-          "color": "[1, 0, 0, 0.39]"
-        }
-      }
     }
   }
 }
