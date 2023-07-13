@@ -301,6 +301,13 @@
                           }
                         }
                       }
+                    ],
+                    "ComponentCollider": [
+                      {
+                        "Script.ComponentCollider": {
+                          "active": true
+                        }
+                      }
                     ]
                   },
                   "children": []
@@ -641,6 +648,13 @@
                     "walkSpeed": 1.9999999999999991
                   }
                 }
+              ],
+              "ComponentCollider": [
+                {
+                  "Script.ComponentCollider": {
+                    "active": true
+                  }
+                }
               ]
             },
             "children": [
@@ -671,7 +685,7 @@
                           "clrPrimary": "[1, 1, 1, 1]",
                           "clrSecondary": "[1, 1, 1, 1]",
                           "pivot": {
-                            "translation": "[0.4999999403953552, 0]",
+                            "translation": "[0.2499999701976776, 0]",
                             "rotation": 0,
                             "scaling": "[0.25, 1]"
                           },

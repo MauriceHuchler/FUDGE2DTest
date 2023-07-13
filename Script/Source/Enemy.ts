@@ -20,7 +20,6 @@ namespace Entity {
             }
             tgtVector.normalize();
             // console.log(this.myPos.mtxLocal.toString());
-            console.log(tgtVector.toString());
             this.myPos.mtxLocal.translate(ƒ.Vector3.SCALE(tgtVector.toVector3(), deltaTime * this.walkSpeed));
 
         }

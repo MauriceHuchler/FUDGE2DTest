@@ -150,6 +150,72 @@ var Script;
     }
     Script.CharacterController = CharacterController;
 })(Script || (Script = {}));
+var Collider;
+(function (Collider_1) {
+    var ƒ = FudgeCore;
+    class Collider {
+        position;
+        radius;
+        constructor(_position, _radius) {
+            this.position = _position;
+            this.radius = _radius;
+        }
+        collides(_collider) {
+            let distance = ƒ.Vector2.DIFFERENCE(this.position, _collider.position);
+            if (this.radius + _collider.radius > distance.magnitude) {
+                return true;
+            }
+            return false;
+        }
+    }
+    Collider_1.Collider = Collider;
+})(Collider || (Collider = {}));
+var Script;
+(function (Script) {
+    var ƒ = FudgeCore;
+    ƒ.Project.registerScriptNamespace(Script);
+    class ComponentCollider extends ƒ.ComponentScript {
+        static iSubclass = ƒ.Component.registerSubclass(ComponentCollider);
+        position;
+        radius;
+        constructor() {
+            super();
+            if (ƒ.Project.mode == ƒ.MODE.EDITOR)
+                return;
+            this.addEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
+            this.addEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
+            this.addEventListener("nodeDeserialized" /* NODE_DESERIALIZED */, this.hndEvent);
+        }
+        hndEvent = (_event) => {
+            switch (_event.type) {
+                case "componentAdd" /* COMPONENT_ADD */:
+                    break;
+                case "componentRemove" /* COMPONENT_REMOVE */:
+                    this.removeEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
+                    this.removeEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
+                    break;
+                case "nodeDeserialized" /* NODE_DESERIALIZED */:
+                    // if deserialized the node is now fully reconstructed and access to all its components and children is possible
+                    this.position = this.node.mtxLocal.translation;
+                    ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.update);
+                    break;
+            }
+        };
+        collides(_collider) {
+            let distance = ƒ.Vector2.DIFFERENCE(this.position.toVector2(), _collider.position.toVector2());
+            if (this.radius + _collider.radius > distance.magnitude) {
+                // ƒ.Project.dispatchEvent(new CustomEvent("PlayerCollision"));
+                return true;
+            }
+            return false;
+        }
+        update = () => {
+            this.position = this.node.mtxLocal.translation;
+            console.log(this.position.toString());
+        };
+    }
+    Script.ComponentCollider = ComponentCollider;
+})(Script || (Script = {}));
 var Script;
 (function (Script) {
     var ƒ = FudgeCore;
@@ -298,7 +364,6 @@ var Entity;
             }
             tgtVector.normalize();
             // console.log(this.myPos.mtxLocal.toString());
-            console.log(tgtVector.toString());
             this.myPos.mtxLocal.translate(ƒ.Vector3.SCALE(tgtVector.toVector3(), deltaTime * this.walkSpeed));
         }
     }

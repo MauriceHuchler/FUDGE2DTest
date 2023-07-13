@@ -28,6 +28,27 @@ declare namespace Script {
         update: (_event: Event) => void;
     }
 }
+declare namespace Collider {
+    import ƒ = FudgeCore;
+    class Collider {
+        position: ƒ.Vector2;
+        radius: number;
+        constructor(_position: ƒ.Vector2, _radius: number);
+        collides(_collider: Collider): boolean;
+    }
+}
+declare namespace Script {
+    import ƒ = FudgeCore;
+    class ComponentCollider extends ƒ.ComponentScript {
+        static readonly iSubclass: number;
+        position: ƒ.Vector3;
+        radius: number;
+        constructor();
+        hndEvent: (_event: Event) => void;
+        collides(_collider: ComponentCollider): boolean;
+        update: () => void;
+    }
+}
 declare namespace Script {
     import ƒ = FudgeCore;
     class ComponentEnemy extends ƒ.ComponentScript {
