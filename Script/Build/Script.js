@@ -358,6 +358,42 @@ var Script;
 })(Script || (Script = {}));
 var Script;
 (function (Script) {
+    var ƒ = FudgeCore;
+    ƒ.Project.registerScriptNamespace(Script);
+    class ComponentSpawner extends ƒ.ComponentScript {
+        static iSubclass = ƒ.Component.registerSubclass(Script.CustomComponentScript);
+        enemyPrefab;
+        enemySpawnpoints;
+        constructor() {
+            super();
+            this.addEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
+            this.addEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
+            this.addEventListener("nodeDeserialized" /* NODE_DESERIALIZED */, this.hndEvent);
+            ƒ.Project.addEventListener("GraphReady", this.start);
+        }
+        hndEvent = (_event) => {
+            switch (_event.type) {
+                case "componentAdd" /* COMPONENT_ADD */:
+                    break;
+                case "componentRemove" /* COMPONENT_REMOVE */:
+                    this.removeEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
+                    this.removeEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
+                    break;
+                case "nodeDeserialized" /* NODE_DESERIALIZED */:
+                    // if deserialized the node is now fully reconstructed and access to all its components and children is possible
+                    break;
+            }
+        };
+        start = () => {
+            this.enemyPrefab;
+        };
+        spawnEnemies() {
+        }
+    }
+    Script.ComponentSpawner = ComponentSpawner;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
     class Cooldown {
         hasCooldown;
         cooldown;

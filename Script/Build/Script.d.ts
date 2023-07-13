@@ -77,6 +77,18 @@ declare namespace Script {
     }
 }
 declare namespace Script {
+    import ƒ = FudgeCore;
+    class ComponentSpawner extends ƒ.ComponentScript {
+        static readonly iSubclass: number;
+        enemyPrefab: ƒ.Node;
+        enemySpawnpoints: ƒ.Node[];
+        constructor();
+        hndEvent: (_event: Event) => void;
+        start: () => void;
+        spawnEnemies(): void;
+    }
+}
+declare namespace Script {
     class Cooldown {
         hasCooldown: boolean;
         private cooldown;
