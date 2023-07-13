@@ -17,6 +17,8 @@ declare namespace Script {
         message: string;
         walkSpeed: number;
         private isFacingRight;
+        health: Script.ComponentHealth;
+        damageCooldown: Cooldown;
         private cmpAnimator;
         private avatarWalkL;
         private avatarWalkR;
@@ -25,6 +27,7 @@ declare namespace Script {
         private currentAnimation;
         constructor();
         hndEvent: (_event: Event) => void;
+        getDamage: (_event: CustomEvent) => void;
         update: (_event: Event) => void;
     }
 }
@@ -55,6 +58,7 @@ declare namespace Script {
         static readonly iSubclass: number;
         private enemy;
         walkSpeed: number;
+        damage: number;
         constructor();
         hndEvent: (_event: Event) => void;
         setTarget: (_event: CustomEvent) => void;
@@ -70,6 +74,23 @@ declare namespace Script {
         constructor();
         hndEvent: (_event: Event) => void;
         getDamage(_damage: number, _node: ƒ.Node): void;
+    }
+}
+declare namespace Script {
+    class Cooldown {
+        hasCooldown: boolean;
+        private cooldown;
+        get getMaxCoolDown(): number;
+        set setMaxCoolDown(_param: number);
+        private currentCooldown;
+        get getCurrentCooldown(): number;
+        onEndCooldown: () => void;
+        constructor(_number: number);
+        startCooldown(): void;
+        private endCooldown;
+        resetCooldown(): void;
+        eventUpdate: (_event: Event) => void;
+        updateCooldown(): void;
     }
 }
 declare namespace Script {

@@ -7,13 +7,14 @@ namespace Script {
 
         private enemy: Entity.Enemy;
         public walkSpeed: number;
+        public damage: number
 
         constructor() {
             super();
             // Don't start when running in editor
             if (ƒ.Project.mode == ƒ.MODE.EDITOR)
                 return;
-
+            this.damage = 1;
 
 
             // Listen to this component being added to or removed from a node
@@ -37,8 +38,6 @@ namespace Script {
                     // if deserialized the node is now fully reconstructed and access to all its components and children is possible
                     break;
                 case ƒ.EVENT.RESOURCES_LOADED:
-
-
                     break;
 
             }

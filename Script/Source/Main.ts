@@ -6,6 +6,10 @@ namespace TestGame {
   window.addEventListener("load", init);
   let viewport = new ƒ.Viewport();
   export let graph: ƒ.Graph;
+
+  let collider: Script.ComponentCollider[];
+
+
   function init(_event: Event)/* : void */ {
     let dialog/* : HTMLDialogElement */ = document.querySelector("dialog");
     dialog.querySelector("h1").textContent = document.title;
@@ -32,11 +36,51 @@ namespace TestGame {
 
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
     ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
+
+    let tgt = deepSearch(graph);
+    collider = getComponentCollider(tgt);
+    console.log(collider);
   }
 
+  function deepSearch(_node: ƒ.Graph): ƒ.Node[] {
+    let result: ƒ.Node[] = [];
+
+    function search(_node: ƒ.Node) {
+      let children: ƒ.Node[] = [];
+      children = _node.getChildren();
+      if (children.length > 0) {
+        result.push(...children);
+        for (let child of children) {
+          search(child);
+        }
+      }
+    }
+
+    search(_node);
+    return result;
+  }
+
+  function getComponentCollider(_nodes: ƒ.Node[],): Script.ComponentCollider[] {
+    let result: Script.ComponentCollider[] = [];
+    for (let node of _nodes) {
+      let value = node.getComponent(Script.ComponentCollider);
+      if (value != null) {
+        result.push(value);
+      }
+    }
+    return result;
+  }
 
   function update(_event: Event): void {
     // ƒ.Physics.simulate();  // if physics is included and used
+    if (collider.length > 0) {
+      let avatarCollider: Script.ComponentCollider = collider.find(col => col.node.name == "Sprite");
+      for (let collision of collider) {
+        if (avatarCollider.position.magnitude - collision.position.magnitude != 0) {
+          avatarCollider.collides(collision);
+        }
+      }
+    }
     viewport.draw();
     // ƒ.AudioManager.default.update();
   }

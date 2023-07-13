@@ -222,7 +222,7 @@
                           "clrPrimary": "[1, 1, 1, 1]",
                           "clrSecondary": "[1, 1, 1, 1]",
                           "pivot": {
-                            "translation": "[0.5, 0.3333333432674408]",
+                            "translation": "[0, 0.3333333432674408]",
                             "rotation": 0,
                             "scaling": "[0.125, 0.1666666716337204]"
                           },
@@ -623,15 +623,22 @@
           }
         },
         {
-          "ƒ.Node": {
+          "ƒ.GraphInstance": {
+            "deserializeFromSource": true,
             "name": "Enemy",
+            "idSource": "Graph|2023-07-13T13:15:40.237Z|89233"
+          }
+        },
+        {
+          "ƒ.Node": {
+            "name": "Enemy2",
             "active": true,
             "components": {
               "ComponentTransform": [
                 {
                   "ƒ.ComponentTransform": {
                     "local": {
-                      "translation": "[2, 0, 0]",
+                      "translation": "[-2, 0, 0]",
                       "rotation": "[0, 0, 0]",
                       "scaling": "[0.3999999165534973, 0.3999999761581421, 1]"
                     },
@@ -685,7 +692,7 @@
                           "clrPrimary": "[1, 1, 1, 1]",
                           "clrSecondary": "[1, 1, 1, 1]",
                           "pivot": {
-                            "translation": "[0.2499999701976776, 0]",
+                            "translation": "[0.7499998807907104, 0]",
                             "rotation": 0,
                             "scaling": "[0.25, 1]"
                           },
@@ -763,6 +770,104 @@
       "idResource": "MeshCube|2023-07-11T12:23:21.878Z|85547",
       "name": "MyCube",
       "type": "MeshCube"
+    }
+  },
+  "Graph|2023-07-13T13:15:40.237Z|89233": {
+    "ƒ.Graph": {
+      "name": "Enemy",
+      "active": true,
+      "components": {
+        "ComponentTransform": [
+          {
+            "ƒ.ComponentTransform": {
+              "local": {
+                "translation": "[2, 0, 0]",
+                "rotation": "[0, 0, 0]",
+                "scaling": "[0.3999999165534973, 0.3999999761581421, 1]"
+              },
+              "Component": {
+                "active": true
+              }
+            }
+          }
+        ],
+        "ComponentEnemy": [
+          {
+            "Script.ComponentEnemy": {
+              "active": true,
+              "walkSpeed": 1.9999999999999991
+            }
+          }
+        ],
+        "ComponentCollider": [
+          {
+            "Script.ComponentCollider": {
+              "active": true
+            }
+          }
+        ]
+      },
+      "children": [
+        {
+          "ƒ.Node": {
+            "name": "Sprite",
+            "active": true,
+            "components": {
+              "ComponentMesh": [
+                {
+                  "ƒ.ComponentMesh": {
+                    "idMesh": "MeshSprite|2023-07-10T08:13:43.110Z|04159",
+                    "pivot": {
+                      "translation": "[0, 0, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[1, 1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ],
+              "ComponentMaterial": [
+                {
+                  "ƒ.ComponentMaterial": {
+                    "sortForAlpha": false,
+                    "clrPrimary": "[1, 1, 1, 1]",
+                    "clrSecondary": "[1, 1, 1, 1]",
+                    "pivot": {
+                      "translation": "[0.2499999701976776, 0]",
+                      "rotation": 0,
+                      "scaling": "[0.25, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    },
+                    "idMaterial": "Material|2023-07-12T14:43:04.759Z|28988"
+                  }
+                }
+              ],
+              "ComponentAnimator": [
+                {
+                  "ƒ.ComponentAnimator": {
+                    "Component": {
+                      "active": true
+                    },
+                    "idAnimation": "AnimationSprite|2023-07-12T14:43:58.501Z|23577",
+                    "playmode": "loop",
+                    "quantization": "discrete",
+                    "scale": 1,
+                    "scaleWithGameTime": true,
+                    "animateInEditor": true
+                  }
+                }
+              ]
+            },
+            "children": []
+          }
+        }
+      ],
+      "idResource": "Graph|2023-07-13T13:15:40.237Z|89233",
+      "type": "Graph"
     }
   }
 }

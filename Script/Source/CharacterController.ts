@@ -11,6 +11,9 @@ namespace Script {
 
         public walkSpeed: number;
         private isFacingRight: boolean;
+        public health: Script.ComponentHealth;
+        public damageCooldown: Cooldown;
+
 
         private cmpAnimator: ƒ.ComponentAnimator;
 
@@ -33,6 +36,7 @@ namespace Script {
                 return;
             // Avatar Stats
             this.walkSpeed = 2.5;
+            this.damageCooldown = new Cooldown(2 * 60);
             //get Components
 
             //get resources          
@@ -42,6 +46,8 @@ namespace Script {
             this.addEventListener(ƒ.EVENT.COMPONENT_REMOVE, this.hndEvent);
             this.addEventListener(ƒ.EVENT.NODE_DESERIALIZED, this.hndEvent);
             ƒ.Project.addEventListener(ƒ.EVENT.RESOURCES_LOADED, this.hndEvent);
+            ƒ.Project.addEventListener("OnCollisionEvent", <EventListener>this.getDamage);
+
 
         }
 
@@ -62,6 +68,8 @@ namespace Script {
                     break;
                 case ƒ.EVENT.RESOURCES_LOADED:
                     // start method
+                    this.health = this.node.getComponent(ComponentHealth);
+
                     this.avatarWalkL = <ƒ.AnimationSprite>ƒ.Project.getResourcesByName("AvatarWalkL")[0];
                     this.avatarIdleL = <ƒ.AnimationSprite>ƒ.Project.getResourcesByName("AvatarIdleL")[0];
                     this.avatarIdleR = <ƒ.AnimationSprite>ƒ.Project.getResourcesByName("AvatarIdleR")[0];
@@ -70,18 +78,23 @@ namespace Script {
             }
         }
 
+        public getDamage = (_event: CustomEvent) => {
+            // console.log(_event.detail);
+            // console.log(_event.detail);
+            let enemy: ƒ.Node = _event.detail;
+            if (this.damageCooldown.hasCooldown) {
+                return;
+            }
+            this.health.getDamage(enemy.getComponent(Script.ComponentEnemy).damage, this.node);
+            this.damageCooldown.startCooldown();
+        }
+
 
         public update = (_event: Event): void => {
             let deltaTime: number = ƒ.Loop.timeFrameGame / 1000;
             let inputDirection: ƒ.Vector3 = ƒ.Vector3.ZERO();
             let x = 0;
             let y = 0;
-
-            if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.G])) {
-                let health = this.node.getComponent(ComponentHealth);
-                // console.log(health);
-                health.getDamage(5, this.node);
-            }
 
             if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.A, ƒ.KEYBOARD_CODE.ARROW_LEFT])) {
                 x = -1;

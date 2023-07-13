@@ -32,6 +32,7 @@ namespace Script {
                 case ƒ.EVENT.NODE_DESERIALIZED:
                     // if deserialized the node is now fully reconstructed and access to all its components and children is possible
                     this.position = this.node.mtxLocal.translation;
+                    this.radius = this.node.mtxLocal.scaling.x / 2;
                     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, this.update);
 
                     break;
@@ -41,8 +42,7 @@ namespace Script {
         public collides(_collider: ComponentCollider): boolean {
             let distance: ƒ.Vector2 = ƒ.Vector2.DIFFERENCE(this.position.toVector2(), _collider.position.toVector2());
             if (this.radius + _collider.radius > distance.magnitude) {
-                // ƒ.Project.dispatchEvent(new CustomEvent("PlayerCollision"));
-
+                ƒ.Project.dispatchEvent(new CustomEvent("OnCollisionEvent", {detail: _collider.node}));
                 return true;
             }
             return false;
@@ -51,7 +51,7 @@ namespace Script {
 
         public update = (): void => {
             this.position = this.node.mtxLocal.translation;
-            console.log(this.position.toString());
+            // console.log(this.position.toString());
         }
 
 

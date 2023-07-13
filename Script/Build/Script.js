@@ -5,6 +5,7 @@ var TestGame;
     ƒ.Debug.info("Main Program Template running!");
     window.addEventListener("load", init);
     let viewport = new ƒ.Viewport();
+    let collider;
     function init(_event) {
         let dialog /* : HTMLDialogElement */ = document.querySelector("dialog");
         dialog.querySelector("h1").textContent = document.title;
@@ -28,9 +29,45 @@ var TestGame;
         ƒ.Project.dispatchEvent(new CustomEvent("GraphReady"));
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
         ƒ.Loop.start(); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
+        let tgt = deepSearch(TestGame.graph);
+        collider = getComponentCollider(tgt);
+        console.log(collider);
+    }
+    function deepSearch(_node) {
+        let result = [];
+        function search(_node) {
+            let children = [];
+            children = _node.getChildren();
+            if (children.length > 0) {
+                result.push(...children);
+                for (let child of children) {
+                    search(child);
+                }
+            }
+        }
+        search(_node);
+        return result;
+    }
+    function getComponentCollider(_nodes) {
+        let result = [];
+        for (let node of _nodes) {
+            let value = node.getComponent(Script.ComponentCollider);
+            if (value != null) {
+                result.push(value);
+            }
+        }
+        return result;
     }
     function update(_event) {
         // ƒ.Physics.simulate();  // if physics is included and used
+        if (collider.length > 0) {
+            let avatarCollider = collider.find(col => col.node.name == "Sprite");
+            for (let collision of collider) {
+                if (avatarCollider.position.magnitude - collision.position.magnitude != 0) {
+                    avatarCollider.collides(collision);
+                }
+            }
+        }
         viewport.draw();
         // ƒ.AudioManager.default.update();
     }
@@ -59,6 +96,8 @@ var Script;
         message = "CustomComponentScript added to ";
         walkSpeed;
         isFacingRight;
+        health;
+        damageCooldown;
         cmpAnimator;
         //Animation Sprites
         avatarWalkL;
@@ -73,6 +112,7 @@ var Script;
                 return;
             // Avatar Stats
             this.walkSpeed = 2.5;
+            this.damageCooldown = new Script.Cooldown(2 * 60);
             //get Components
             //get resources          
             // Listen to this component being added to or removed from a node
@@ -80,6 +120,7 @@ var Script;
             this.addEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
             this.addEventListener("nodeDeserialized" /* NODE_DESERIALIZED */, this.hndEvent);
             ƒ.Project.addEventListener("resourcesLoaded" /* RESOURCES_LOADED */, this.hndEvent);
+            ƒ.Project.addEventListener("OnCollisionEvent", this.getDamage);
         }
         // Activate the functions of this component as response to events
         hndEvent = (_event) => {
@@ -98,6 +139,7 @@ var Script;
                     break;
                 case "resourcesLoaded" /* RESOURCES_LOADED */:
                     // start method
+                    this.health = this.node.getComponent(Script.ComponentHealth);
                     this.avatarWalkL = ƒ.Project.getResourcesByName("AvatarWalkL")[0];
                     this.avatarIdleL = ƒ.Project.getResourcesByName("AvatarIdleL")[0];
                     this.avatarIdleR = ƒ.Project.getResourcesByName("AvatarIdleR")[0];
@@ -105,16 +147,21 @@ var Script;
                     break;
             }
         };
+        getDamage = (_event) => {
+            // console.log(_event.detail);
+            // console.log(_event.detail);
+            let enemy = _event.detail;
+            if (this.damageCooldown.hasCooldown) {
+                return;
+            }
+            this.health.getDamage(enemy.getComponent(Script.ComponentEnemy).damage, this.node);
+            this.damageCooldown.startCooldown();
+        };
         update = (_event) => {
             let deltaTime = ƒ.Loop.timeFrameGame / 1000;
             let inputDirection = ƒ.Vector3.ZERO();
             let x = 0;
             let y = 0;
-            if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.G])) {
-                let health = this.node.getComponent(Script.ComponentHealth);
-                // console.log(health);
-                health.getDamage(5, this.node);
-            }
             if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.A, ƒ.KEYBOARD_CODE.ARROW_LEFT])) {
                 x = -1;
                 this.isFacingRight = false;
@@ -197,6 +244,7 @@ var Script;
                 case "nodeDeserialized" /* NODE_DESERIALIZED */:
                     // if deserialized the node is now fully reconstructed and access to all its components and children is possible
                     this.position = this.node.mtxLocal.translation;
+                    this.radius = this.node.mtxLocal.scaling.x / 2;
                     ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.update);
                     break;
             }
@@ -204,14 +252,14 @@ var Script;
         collides(_collider) {
             let distance = ƒ.Vector2.DIFFERENCE(this.position.toVector2(), _collider.position.toVector2());
             if (this.radius + _collider.radius > distance.magnitude) {
-                // ƒ.Project.dispatchEvent(new CustomEvent("PlayerCollision"));
+                ƒ.Project.dispatchEvent(new CustomEvent("OnCollisionEvent", { detail: _collider.node }));
                 return true;
             }
             return false;
         }
         update = () => {
             this.position = this.node.mtxLocal.translation;
-            console.log(this.position.toString());
+            // console.log(this.position.toString());
         };
     }
     Script.ComponentCollider = ComponentCollider;
@@ -224,11 +272,13 @@ var Script;
         static iSubclass = ƒ.Component.registerSubclass(ComponentEnemy);
         enemy;
         walkSpeed;
+        damage;
         constructor() {
             super();
             // Don't start when running in editor
             if (ƒ.Project.mode == ƒ.MODE.EDITOR)
                 return;
+            this.damage = 1;
             // Listen to this component being added to or removed from a node
             this.addEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
             this.addEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
@@ -305,6 +355,54 @@ var Script;
         }
     }
     Script.ComponentHealth = ComponentHealth;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
+    class Cooldown {
+        hasCooldown;
+        cooldown;
+        get getMaxCoolDown() { return this.cooldown; }
+        ;
+        set setMaxCoolDown(_param) { this.cooldown = _param; }
+        currentCooldown;
+        get getCurrentCooldown() { return this.currentCooldown; }
+        ;
+        onEndCooldown;
+        constructor(_number) {
+            this.cooldown = _number;
+            this.currentCooldown = _number;
+            this.hasCooldown = false;
+        }
+        startCooldown() {
+            this.hasCooldown = true;
+            ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.eventUpdate);
+        }
+        endCooldown() {
+            if (this.onEndCooldown != undefined) {
+                this.onEndCooldown();
+            }
+            this.hasCooldown = false;
+            this.currentCooldown = this.cooldown;
+            ƒ.Loop.removeEventListener("loopFrame" /* LOOP_FRAME */, this.eventUpdate);
+        }
+        resetCooldown() {
+            this.hasCooldown = false;
+            this.currentCooldown = this.cooldown;
+            ƒ.Loop.removeEventListener("loopFrame" /* LOOP_FRAME */, this.eventUpdate);
+        }
+        eventUpdate = (_event) => {
+            this.updateCooldown();
+        };
+        updateCooldown() {
+            if (this.hasCooldown && this.currentCooldown > 0) {
+                this.currentCooldown--;
+            }
+            if (this.currentCooldown <= 0 && this.hasCooldown) {
+                this.endCooldown();
+            }
+        }
+    }
+    Script.Cooldown = Cooldown;
 })(Script || (Script = {}));
 var Script;
 (function (Script) {
