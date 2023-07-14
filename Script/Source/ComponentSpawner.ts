@@ -3,17 +3,23 @@ namespace Script {
     ƒ.Project.registerScriptNamespace(Script);
 
     export class ComponentSpawner extends ƒ.ComponentScript {
-        public static readonly iSubclass: number = ƒ.Component.registerSubclass(CustomComponentScript);
-        public enemyPrefab: ƒ.Node;
+        public static readonly iSubclass: number = ƒ.Component.registerSubclass(ComponentSpawner);
+        public enemyPrefab: ƒ.Graph;
         public enemySpawnpoints: ƒ.Node[];
+        public counter: number
+        public spawnCooldown: Cooldown;
+        public numberOfEnemies: number;
 
         constructor() {
+
             super();
             this.addEventListener(ƒ.EVENT.COMPONENT_ADD, this.hndEvent);
             this.addEventListener(ƒ.EVENT.COMPONENT_REMOVE, this.hndEvent);
             this.addEventListener(ƒ.EVENT.NODE_DESERIALIZED, this.hndEvent);
             ƒ.Project.addEventListener("GraphReady", <EventListener>this.start);
-
+            this.counter = 0;
+            this.numberOfEnemies = 3;
+            this.spawnCooldown = new Cooldown(3 * 60);
         }
 
         public hndEvent = (_event: Event): void => {
@@ -25,17 +31,42 @@ namespace Script {
                     this.removeEventListener(ƒ.EVENT.COMPONENT_REMOVE, this.hndEvent);
                     break;
                 case ƒ.EVENT.NODE_DESERIALIZED:
+                    ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, this.update);
+
                     // if deserialized the node is now fully reconstructed and access to all its components and children is possible
                     break;
             }
         }
 
-        public start = () => {
-           this.enemyPrefab
+        public start = (_event: CustomEvent): void => {
+            let spawnParent = TestGame.graph.getChildrenByName("Spawn Points")[0];
+            this.enemySpawnpoints = spawnParent.getChildren();
+            this.enemyPrefab = <ƒ.Graph>ƒ.Project.getResourcesByName("Enemy")[0];
 
         }
-        public spawnEnemies() {
 
+        public update = (_event: Event): void => {
+            if (this.numberOfEnemies > 0) {
+                if (this.spawnCooldown.hasCooldown) {
+                    return;
+                }
+                this.spawnEnemies();
+                this.spawnCooldown.startCooldown()
+                this.numberOfEnemies--;
+            }
         }
+        async spawnEnemies() {
+            let nextSpawnPosition: ƒ.Vector3 = this.enemySpawnpoints[this.counter % 4].mtxLocal.translation;
+            this.counter++;
+            this.enemyPrefab.mtxLocal.translation = nextSpawnPosition;
+
+
+            let instance = await ƒ.Project.createGraphInstance(this.enemyPrefab);
+            TestGame.graph.addChild(instance);
+            ƒ.Project.dispatchEvent(new CustomEvent("SetTarget"));
+            TestGame.scanCollider();
+        }
+
+
     }
 }

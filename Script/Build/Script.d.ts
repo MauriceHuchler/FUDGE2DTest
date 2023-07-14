@@ -1,6 +1,7 @@
 declare namespace TestGame {
     import ƒ = FudgeCore;
     let graph: ƒ.Graph;
+    function scanCollider(): void;
 }
 declare namespace Entity {
     import ƒ = FudgeCore;
@@ -80,12 +81,16 @@ declare namespace Script {
     import ƒ = FudgeCore;
     class ComponentSpawner extends ƒ.ComponentScript {
         static readonly iSubclass: number;
-        enemyPrefab: ƒ.Node;
+        enemyPrefab: ƒ.Graph;
         enemySpawnpoints: ƒ.Node[];
+        counter: number;
+        spawnCooldown: Cooldown;
+        numberOfEnemies: number;
         constructor();
         hndEvent: (_event: Event) => void;
-        start: () => void;
-        spawnEnemies(): void;
+        start: (_event: CustomEvent) => void;
+        update: (_event: Event) => void;
+        spawnEnemies(): Promise<void>;
     }
 }
 declare namespace Script {

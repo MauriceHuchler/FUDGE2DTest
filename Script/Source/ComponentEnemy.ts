@@ -22,7 +22,7 @@ namespace Script {
             this.addEventListener(ƒ.EVENT.COMPONENT_REMOVE, this.hndEvent);
             this.addEventListener(ƒ.EVENT.NODE_DESERIALIZED, this.hndEvent);
             ƒ.Project.addEventListener(ƒ.EVENT.RESOURCES_LOADED, this.hndEvent);
-            ƒ.Project.addEventListener("GraphReady", <EventListener>this.setTarget);
+            ƒ.Project.addEventListener("SetTarget", <EventListener>this.setTarget);
 
         }
 

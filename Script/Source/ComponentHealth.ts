@@ -14,7 +14,7 @@ namespace Script {
             if (ƒ.Project.mode == ƒ.MODE.EDITOR)
                 return;
 
-            this.maxHealth = 5;
+            this.maxHealth = 50;
             this.health = new Entity.Health(this.maxHealth)
 
             this.addEventListener(ƒ.EVENT.COMPONENT_ADD, this.hndEvent);
@@ -45,6 +45,7 @@ namespace Script {
                 }
                 // delete Node
             }
+            console.log(this.node.getAllComponents());
         }
     }
 }

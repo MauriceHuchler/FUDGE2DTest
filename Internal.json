@@ -222,7 +222,7 @@
                           "clrPrimary": "[1, 1, 1, 1]",
                           "clrSecondary": "[1, 1, 1, 1]",
                           "pivot": {
-                            "translation": "[0.25, 0.3333333432674408]",
+                            "translation": "[0.5, 0.3333333432674408]",
                             "rotation": 0,
                             "scaling": "[0.125, 0.1666666716337204]"
                           },
@@ -393,7 +393,17 @@
           "ƒ.Node": {
             "name": "Spawn Points",
             "active": true,
-            "components": {},
+            "components": {
+              "ComponentSpawner": [
+                {
+                  "Script.ComponentSpawner": {
+                    "active": true,
+                    "counter": 0,
+                    "numberOfEnemies": 3
+                  }
+                }
+              ]
+            },
             "children": [
               {
                 "ƒ.Node": {
@@ -623,109 +633,6 @@
           }
         },
         {
-          "ƒ.GraphInstance": {
-            "deserializeFromSource": true,
-            "name": "Enemy",
-            "idSource": "Graph|2023-07-13T13:15:40.237Z|89233"
-          }
-        },
-        {
-          "ƒ.Node": {
-            "name": "Enemy2",
-            "active": true,
-            "components": {
-              "ComponentTransform": [
-                {
-                  "ƒ.ComponentTransform": {
-                    "local": {
-                      "translation": "[-2, 0, 0]",
-                      "rotation": "[0, 0, 0]",
-                      "scaling": "[0.3999999165534973, 0.3999999761581421, 1]"
-                    },
-                    "Component": {
-                      "active": true
-                    }
-                  }
-                }
-              ],
-              "ComponentEnemy": [
-                {
-                  "Script.ComponentEnemy": {
-                    "active": true,
-                    "walkSpeed": 1.9999999999999991
-                  }
-                }
-              ],
-              "ComponentCollider": [
-                {
-                  "Script.ComponentCollider": {
-                    "active": true
-                  }
-                }
-              ]
-            },
-            "children": [
-              {
-                "ƒ.Node": {
-                  "name": "Sprite",
-                  "active": true,
-                  "components": {
-                    "ComponentMesh": [
-                      {
-                        "ƒ.ComponentMesh": {
-                          "idMesh": "MeshSprite|2023-07-10T08:13:43.110Z|04159",
-                          "pivot": {
-                            "translation": "[0, 0, 0]",
-                            "rotation": "[0, 0, 0]",
-                            "scaling": "[1, 1, 1]"
-                          },
-                          "Component": {
-                            "active": true
-                          }
-                        }
-                      }
-                    ],
-                    "ComponentMaterial": [
-                      {
-                        "ƒ.ComponentMaterial": {
-                          "sortForAlpha": false,
-                          "clrPrimary": "[1, 1, 1, 1]",
-                          "clrSecondary": "[1, 1, 1, 1]",
-                          "pivot": {
-                            "translation": "[0, 0]",
-                            "rotation": 0,
-                            "scaling": "[0.25, 1]"
-                          },
-                          "Component": {
-                            "active": true
-                          },
-                          "idMaterial": "Material|2023-07-12T14:43:04.759Z|28988"
-                        }
-                      }
-                    ],
-                    "ComponentAnimator": [
-                      {
-                        "ƒ.ComponentAnimator": {
-                          "Component": {
-                            "active": true
-                          },
-                          "idAnimation": "AnimationSprite|2023-07-12T14:43:58.501Z|23577",
-                          "playmode": "loop",
-                          "quantization": "discrete",
-                          "scale": 1,
-                          "scaleWithGameTime": true,
-                          "animateInEditor": true
-                        }
-                      }
-                    ]
-                  },
-                  "children": []
-                }
-              }
-            ]
-          }
-        },
-        {
           "ƒ.Node": {
             "name": "Spawner",
             "active": true,
@@ -789,7 +696,7 @@
           {
             "ƒ.ComponentTransform": {
               "local": {
-                "translation": "[2, 0, 0]",
+                "translation": "[0, 0, 0]",
                 "rotation": "[0, 0, 0]",
                 "scaling": "[0.3999999165534973, 0.3999999761581421, 1]"
               },
@@ -843,7 +750,7 @@
                     "clrPrimary": "[1, 1, 1, 1]",
                     "clrSecondary": "[1, 1, 1, 1]",
                     "pivot": {
-                      "translation": "[0.2499999701976776, 0]",
+                      "translation": "[0.4999999403953552, 0]",
                       "rotation": 0,
                       "scaling": "[0.25, 1]"
                     },
@@ -872,9 +779,167 @@
             },
             "children": []
           }
+        },
+        {
+          "ƒ.Node": {
+            "name": "HealthBarContainer",
+            "active": true,
+            "components": {
+              "ComponentTransform": [
+                {
+                  "ƒ.ComponentTransform": {
+                    "local": {
+                      "translation": "[0, 0.6000000238418579, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[0.49999991059303284, 1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ]
+            },
+            "children": [
+              {
+                "ƒ.GraphInstance": {
+                  "deserializeFromSource": true,
+                  "name": "HealthBar",
+                  "idSource": "Graph|2023-07-14T09:08:25.369Z|96425"
+                }
+              }
+            ]
+          }
         }
       ],
       "idResource": "Graph|2023-07-13T13:15:40.237Z|89233",
+      "type": "Graph"
+    }
+  },
+  "Material|2023-07-14T09:08:55.510Z|43872": {
+    "ƒ.Material": {
+      "name": "ShaderLitTextured",
+      "idResource": "Material|2023-07-14T09:08:55.510Z|43872",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2023-07-14T09:08:46.308Z|15338"
+        }
+      }
+    }
+  },
+  "TextureImage|2023-07-14T09:08:46.308Z|15338": {
+    "ƒ.TextureImage": {
+      "url": "Sprites\\UI\\HealthBar.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2023-07-14T09:08:46.308Z|15338",
+        "name": "Sprites\\UI\\HealthBar.png",
+        "mipmap": "CRISP"
+      }
+    }
+  },
+  "AnimationSprite|2023-07-14T09:08:51.959Z|40136": {
+    "ƒ.AnimationSprite": {
+      "idResource": "AnimationSprite|2023-07-14T09:08:51.959Z|40136",
+      "idTexture": "TextureImage|2023-07-14T09:08:46.308Z|15338",
+      "frames": 10,
+      "wrapAfter": 2,
+      "start": "[0, 0]",
+      "size": "[100, 10]",
+      "next": "[100, 0]",
+      "wrap": "[0, 10]",
+      "Animation": {
+        "idResource": "AnimationSprite|2023-07-14T09:08:51.959Z|40136",
+        "name": "AnimationSprite",
+        "labels": {},
+        "events": {},
+        "framesPerSecond": 25,
+        "animationStructure": {}
+      }
+    }
+  },
+  "Graph|2023-07-14T09:08:25.369Z|96425": {
+    "ƒ.Graph": {
+      "name": "HealthBar",
+      "active": true,
+      "components": {
+        "ComponentTransform": [
+          {
+            "ƒ.ComponentTransform": {
+              "local": {
+                "translation": "[0, 0, 0]",
+                "rotation": "[0, 0, 0]",
+                "scaling": "[1, 0.09999992698431015, 1]"
+              },
+              "Component": {
+                "active": true
+              }
+            }
+          }
+        ]
+      },
+      "children": [
+        {
+          "ƒ.Node": {
+            "name": "Sprite",
+            "active": true,
+            "components": {
+              "ComponentMesh": [
+                {
+                  "ƒ.ComponentMesh": {
+                    "idMesh": "MeshSprite|2023-07-10T08:13:43.110Z|04159",
+                    "pivot": {
+                      "translation": "[0, 0, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[1, 1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ],
+              "ComponentMaterial": [
+                {
+                  "ƒ.ComponentMaterial": {
+                    "sortForAlpha": false,
+                    "clrPrimary": "[1, 1, 1, 1]",
+                    "clrSecondary": "[1, 1, 1, 1]",
+                    "pivot": {
+                      "translation": "[0.5, 0.800000011920929]",
+                      "rotation": 0,
+                      "scaling": "[0.5, 0.20000000298023224]"
+                    },
+                    "Component": {
+                      "active": true
+                    },
+                    "idMaterial": "Material|2023-07-14T09:08:55.510Z|43872"
+                  }
+                }
+              ],
+              "ComponentAnimator": [
+                {
+                  "ƒ.ComponentAnimator": {
+                    "Component": {
+                      "active": true
+                    },
+                    "idAnimation": "AnimationSprite|2023-07-14T09:08:51.959Z|40136",
+                    "playmode": "loop",
+                    "quantization": "discrete",
+                    "scale": 1,
+                    "scaleWithGameTime": true,
+                    "animateInEditor": true
+                  }
+                }
+              ]
+            },
+            "children": []
+          }
+        }
+      ],
+      "idResource": "Graph|2023-07-14T09:08:25.369Z|96425",
       "type": "Graph"
     }
   }

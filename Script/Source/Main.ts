@@ -36,7 +36,10 @@ namespace TestGame {
 
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
     ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
+    scanCollider();
+  }
 
+  export function scanCollider() {
     let tgt = deepSearch(graph);
     collider = getComponentCollider(tgt);
     console.log(collider);
@@ -73,7 +76,7 @@ namespace TestGame {
 
   function update(_event: Event): void {
     // ƒ.Physics.simulate();  // if physics is included and used
-    if (collider.length > 0) {
+    if (collider != null && collider.length > 0) {
       let avatarCollider: Script.ComponentCollider = collider.find(col => col.node.name == "Sprite");
       for (let collision of collider) {
         if (avatarCollider.position.magnitude - collision.position.magnitude != 0) {

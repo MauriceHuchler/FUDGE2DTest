@@ -29,10 +29,14 @@ var TestGame;
         ƒ.Project.dispatchEvent(new CustomEvent("GraphReady"));
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
         ƒ.Loop.start(); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
+        scanCollider();
+    }
+    function scanCollider() {
         let tgt = deepSearch(TestGame.graph);
         collider = getComponentCollider(tgt);
         console.log(collider);
     }
+    TestGame.scanCollider = scanCollider;
     function deepSearch(_node) {
         let result = [];
         function search(_node) {
@@ -60,7 +64,7 @@ var TestGame;
     }
     function update(_event) {
         // ƒ.Physics.simulate();  // if physics is included and used
-        if (collider.length > 0) {
+        if (collider != null && collider.length > 0) {
             let avatarCollider = collider.find(col => col.node.name == "Sprite");
             for (let collision of collider) {
                 if (avatarCollider.position.magnitude - collision.position.magnitude != 0) {
@@ -284,7 +288,7 @@ var Script;
             this.addEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
             this.addEventListener("nodeDeserialized" /* NODE_DESERIALIZED */, this.hndEvent);
             ƒ.Project.addEventListener("resourcesLoaded" /* RESOURCES_LOADED */, this.hndEvent);
-            ƒ.Project.addEventListener("GraphReady", this.setTarget);
+            ƒ.Project.addEventListener("SetTarget", this.setTarget);
         }
         hndEvent = (_event) => {
             switch (_event.type) {
@@ -324,7 +328,7 @@ var Script;
             super();
             if (ƒ.Project.mode == ƒ.MODE.EDITOR)
                 return;
-            this.maxHealth = 5;
+            this.maxHealth = 50;
             this.health = new Entity.Health(this.maxHealth);
             this.addEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
             this.addEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
@@ -352,6 +356,7 @@ var Script;
                 }
                 // delete Node
             }
+            console.log(this.node.getAllComponents());
         }
     }
     Script.ComponentHealth = ComponentHealth;
@@ -361,15 +366,21 @@ var Script;
     var ƒ = FudgeCore;
     ƒ.Project.registerScriptNamespace(Script);
     class ComponentSpawner extends ƒ.ComponentScript {
-        static iSubclass = ƒ.Component.registerSubclass(Script.CustomComponentScript);
+        static iSubclass = ƒ.Component.registerSubclass(ComponentSpawner);
         enemyPrefab;
         enemySpawnpoints;
+        counter;
+        spawnCooldown;
+        numberOfEnemies;
         constructor() {
             super();
             this.addEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
             this.addEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
             this.addEventListener("nodeDeserialized" /* NODE_DESERIALIZED */, this.hndEvent);
             ƒ.Project.addEventListener("GraphReady", this.start);
+            this.counter = 0;
+            this.numberOfEnemies = 3;
+            this.spawnCooldown = new Script.Cooldown(3 * 60);
         }
         hndEvent = (_event) => {
             switch (_event.type) {
@@ -380,14 +391,34 @@ var Script;
                     this.removeEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
                     break;
                 case "nodeDeserialized" /* NODE_DESERIALIZED */:
+                    ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.update);
                     // if deserialized the node is now fully reconstructed and access to all its components and children is possible
                     break;
             }
         };
-        start = () => {
-            this.enemyPrefab;
+        start = (_event) => {
+            let spawnParent = TestGame.graph.getChildrenByName("Spawn Points")[0];
+            this.enemySpawnpoints = spawnParent.getChildren();
+            this.enemyPrefab = ƒ.Project.getResourcesByName("Enemy")[0];
         };
-        spawnEnemies() {
+        update = (_event) => {
+            if (this.numberOfEnemies > 0) {
+                if (this.spawnCooldown.hasCooldown) {
+                    return;
+                }
+                this.spawnEnemies();
+                this.spawnCooldown.startCooldown();
+                this.numberOfEnemies--;
+            }
+        };
+        async spawnEnemies() {
+            let nextSpawnPosition = this.enemySpawnpoints[this.counter % 4].mtxLocal.translation;
+            this.counter++;
+            this.enemyPrefab.mtxLocal.translation = nextSpawnPosition;
+            let instance = await ƒ.Project.createGraphInstance(this.enemyPrefab);
+            TestGame.graph.addChild(instance);
+            ƒ.Project.dispatchEvent(new CustomEvent("SetTarget"));
+            TestGame.scanCollider();
         }
     }
     Script.ComponentSpawner = ComponentSpawner;
