@@ -14,6 +14,8 @@ namespace Script {
         public health: Script.ComponentHealth;
         public damageCooldown: Cooldown;
 
+        public projectilePrefab: ƒ.Graph;
+
 
         private cmpAnimator: ƒ.ComponentAnimator;
 
@@ -49,6 +51,7 @@ namespace Script {
             this.addEventListener(ƒ.EVENT.NODE_DESERIALIZED, this.hndEvent);
             ƒ.Project.addEventListener(ƒ.EVENT.RESOURCES_LOADED, this.hndEvent);
             ƒ.Project.addEventListener("OnCollisionEvent", <EventListener>this.getDamage);
+            ƒ.Project.addEventListener("GraphReady", <EventListener>this.start);
             document.addEventListener("mousedown", this.attack);
         }
 
@@ -77,6 +80,10 @@ namespace Script {
                     this.avatarWalkR = <ƒ.AnimationSprite>ƒ.Project.getResourcesByName("AvatarWalkR")[0];
                     break;
             }
+        }
+
+        public start = (): void => {
+            this.projectilePrefab = <ƒ.Graph>ƒ.Project.getResourcesByName("ArrowPrefab")[0];
         }
 
         public getDamage = (_event: CustomEvent) => {
@@ -136,13 +143,33 @@ namespace Script {
             //   // undefined properties and private fields (#) will not be included by default
             // }
         }
-        public getMousePosition = (_mouseEvent: MouseEvent): void => {
-            let ray: ƒ.Ray = TestGame.viewport.getRayFromClient(new ƒ.Vector2(_mouseEvent.pageX - TestGame.canvas.offsetLeft, _mouseEvent.pageY - TestGame.canvas.offsetTop));
+        public getMousePosition = (_mouseEvent: MouseEvent): ƒ.Vector3 => {
+            let canvas: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("Canvas");
+            let ray: ƒ.Ray = TestGame.viewport.getRayFromClient(new ƒ.Vector2(_mouseEvent.pageX - canvas.offsetLeft, _mouseEvent.pageY - canvas.offsetTop));
             this.mousePosition = ray.intersectPlane(new ƒ.Vector3(0, 0, 0), new ƒ.Vector3(0, 0, 1));
-            console.log(this.mousePosition);
+            let shootDirection = ƒ.Vector3.DIFFERENCE(this.mousePosition, this.node.mtxLocal.translation);
+            return shootDirection;
         }
         public attack = (_event: MouseEvent): void => {
-            this.getMousePosition(_event);
+            let mousePos = this.getMousePosition(_event);
+            let direction = this.calcDegree(this.node.mtxLocal.translation, this.mousePosition);
+            // console.log(direction);
+            this.spawnProejctile(direction);
+        }
+
+        async spawnProejctile(_direction: number) {
+            let instance = await ƒ.Project.createGraphInstance(this.projectilePrefab);
+            instance.mtxLocal.translation = this.node.mtxLocal.translation;
+            instance.mtxLocal.rotateZ(_direction+90);
+            TestGame.graph.addChild(instance);
+        }
+
+        public calcDegree(_center: ƒ.Vector3, _target: ƒ.Vector3): number {
+            let xDistance: number = _target.x - _center.x;
+            let yDistance: number = _target.y - _center.y;
+            let degrees: number = Math.atan2(yDistance, xDistance) * (180 / Math.PI) - 90;
+            return degrees;
+
         }
 
     }

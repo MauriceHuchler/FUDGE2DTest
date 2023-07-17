@@ -284,7 +284,7 @@
                           "clrPrimary": "[1, 1, 1, 1]",
                           "clrSecondary": "[1, 1, 1, 1]",
                           "pivot": {
-                            "translation": "[0, 0.3333333432674408]",
+                            "translation": "[0.375, 0.3333333432674408]",
                             "rotation": 0,
                             "scaling": "[0.125, 0.1666666716337204]"
                           },
@@ -948,6 +948,105 @@
         }
       ],
       "idResource": "Graph|2023-07-14T09:08:25.369Z|96425",
+      "type": "Graph"
+    }
+  },
+  "TextureImage|2023-07-17T12:20:13.860Z|34113": {
+    "ƒ.TextureImage": {
+      "url": "Sprites\\Bullet\\arrow.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2023-07-17T12:20:13.860Z|34113",
+        "name": "Sprites\\Bullet\\arrow.png",
+        "mipmap": "CRISP"
+      }
+    }
+  },
+  "Material|2023-07-17T12:20:41.369Z|92163": {
+    "ƒ.Material": {
+      "name": "ArrowMat",
+      "idResource": "Material|2023-07-17T12:20:41.369Z|92163",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2023-07-17T12:20:13.860Z|34113"
+        }
+      }
+    }
+  },
+  "Graph|2023-07-17T12:21:27.931Z|24152": {
+    "ƒ.Graph": {
+      "name": "ArrowPrefab",
+      "active": true,
+      "components": {
+        "ComponentTransform": [
+          {
+            "ƒ.ComponentTransform": {
+              "local": {
+                "translation": "[0, 0, 0]",
+                "rotation": "[0, 0, 0]",
+                "scaling": "[0.2999999225139618, 0.29999998211860657, 1]"
+              },
+              "Component": {
+                "active": true
+              }
+            }
+          }
+        ],
+        "ComponentBullet": [
+          {
+            "Script.ComponentBullet": {
+              "active": true
+            }
+          }
+        ]
+      },
+      "children": [
+        {
+          "ƒ.Node": {
+            "name": "Sprite",
+            "active": true,
+            "components": {
+              "ComponentMesh": [
+                {
+                  "ƒ.ComponentMesh": {
+                    "idMesh": "MeshSprite|2023-07-10T08:13:43.110Z|04159",
+                    "pivot": {
+                      "translation": "[0, 0, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[1, 1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ],
+              "ComponentMaterial": [
+                {
+                  "ƒ.ComponentMaterial": {
+                    "sortForAlpha": false,
+                    "clrPrimary": "[1, 1, 1, 1]",
+                    "clrSecondary": "[1, 1, 1, 1]",
+                    "pivot": {
+                      "translation": "[0, 0]",
+                      "rotation": 0,
+                      "scaling": "[1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    },
+                    "idMaterial": "Material|2023-07-17T12:20:41.369Z|92163"
+                  }
+                }
+              ]
+            },
+            "children": []
+          }
+        }
+      ],
+      "idResource": "Graph|2023-07-17T12:21:27.931Z|24152",
       "type": "Graph"
     }
   }

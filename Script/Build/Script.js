@@ -4,7 +4,6 @@ var TestGame;
     var ƒ = FudgeCore;
     ƒ.Debug.info("Main Program Template running!");
     TestGame.viewport = new ƒ.Viewport();
-    TestGame.canvas = document.getElementById("Canvas");
     window.addEventListener("load", init);
     let collider;
     function init(_event) {
@@ -118,6 +117,7 @@ var Script;
         isFacingRight;
         health;
         damageCooldown;
+        projectilePrefab;
         cmpAnimator;
         //Animation Sprites
         avatarWalkL;
@@ -142,6 +142,7 @@ var Script;
             this.addEventListener("nodeDeserialized" /* NODE_DESERIALIZED */, this.hndEvent);
             ƒ.Project.addEventListener("resourcesLoaded" /* RESOURCES_LOADED */, this.hndEvent);
             ƒ.Project.addEventListener("OnCollisionEvent", this.getDamage);
+            ƒ.Project.addEventListener("GraphReady", this.start);
             document.addEventListener("mousedown", this.attack);
         }
         // Activate the functions of this component as response to events
@@ -168,6 +169,9 @@ var Script;
                     this.avatarWalkR = ƒ.Project.getResourcesByName("AvatarWalkR")[0];
                     break;
             }
+        };
+        start = () => {
+            this.projectilePrefab = ƒ.Project.getResourcesByName("ArrowPrefab")[0];
         };
         getDamage = (_event) => {
             // console.log(_event.detail);
@@ -217,13 +221,30 @@ var Script;
             // }
         };
         getMousePosition = (_mouseEvent) => {
-            let ray = TestGame.viewport.getRayFromClient(new ƒ.Vector2(_mouseEvent.pageX - TestGame.canvas.offsetLeft, _mouseEvent.pageY - TestGame.canvas.offsetTop));
+            let canvas = document.getElementById("Canvas");
+            let ray = TestGame.viewport.getRayFromClient(new ƒ.Vector2(_mouseEvent.pageX - canvas.offsetLeft, _mouseEvent.pageY - canvas.offsetTop));
             this.mousePosition = ray.intersectPlane(new ƒ.Vector3(0, 0, 0), new ƒ.Vector3(0, 0, 1));
-            console.log(this.mousePosition);
+            let shootDirection = ƒ.Vector3.DIFFERENCE(this.mousePosition, this.node.mtxLocal.translation);
+            return shootDirection;
         };
         attack = (_event) => {
-            this.getMousePosition(_event);
+            let mousePos = this.getMousePosition(_event);
+            let direction = this.calcDegree(this.node.mtxLocal.translation, this.mousePosition);
+            // console.log(direction);
+            this.spawnProejctile(direction);
         };
+        async spawnProejctile(_direction) {
+            let instance = await ƒ.Project.createGraphInstance(this.projectilePrefab);
+            instance.mtxLocal.translation = this.node.mtxLocal.translation;
+            instance.mtxLocal.rotateZ(_direction + 90);
+            TestGame.graph.addChild(instance);
+        }
+        calcDegree(_center, _target) {
+            let xDistance = _target.x - _center.x;
+            let yDistance = _target.y - _center.y;
+            let degrees = Math.atan2(yDistance, xDistance) * (180 / Math.PI) - 90;
+            return degrees;
+        }
     }
     Script.CharacterController = CharacterController;
 })(Script || (Script = {}));
@@ -247,6 +268,41 @@ var Collider;
     }
     Collider_1.Collider = Collider;
 })(Collider || (Collider = {}));
+var Script;
+(function (Script) {
+    var ƒ = FudgeCore;
+    ƒ.Project.registerScriptNamespace(Script);
+    class ComponentBullet extends ƒ.ComponentScript {
+        static iSubclass = ƒ.Component.registerSubclass(ComponentBullet);
+        speed;
+        constructor() {
+            super();
+            this.addEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
+            this.addEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
+            this.addEventListener("nodeDeserialized" /* NODE_DESERIALIZED */, this.hndEvent);
+            this.speed = 15;
+        }
+        hndEvent = (_event) => {
+            switch (_event.type) {
+                case "componentAdd" /* COMPONENT_ADD */:
+                    break;
+                case "componentRemove" /* COMPONENT_REMOVE */:
+                    this.removeEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
+                    this.removeEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
+                    break;
+                case "nodeDeserialized" /* NODE_DESERIALIZED */:
+                    ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.update);
+                    // if deserialized the node is now fully reconstructed and access to all its components and children is possible
+                    break;
+            }
+        };
+        update = () => {
+            let deltaTime = ƒ.Loop.timeFrameGame / 1000;
+            this.node.mtxLocal.translateX(this.speed * deltaTime);
+        };
+    }
+    Script.ComponentBullet = ComponentBullet;
+})(Script || (Script = {}));
 var Script;
 (function (Script) {
     var ƒ = FudgeCore;
@@ -390,7 +446,8 @@ var Script;
                 // delete Node
             }
             // console.log(this.node.getAllComponents());
-            console.log(this.cmpAnimation.animation);
+            //TODO: set healthbar sprite
+            // console.log(this.cmpAnimation.animation);
         }
     }
     Script.ComponentHealth = ComponentHealth;

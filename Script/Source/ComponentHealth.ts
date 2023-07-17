@@ -55,7 +55,8 @@ namespace Script {
                 // delete Node
             }
             // console.log(this.node.getAllComponents());
-            console.log(this.cmpAnimation.animation);
+            //TODO: set healthbar sprite
+            // console.log(this.cmpAnimation.animation);
         }
     }
 }

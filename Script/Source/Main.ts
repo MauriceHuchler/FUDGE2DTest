@@ -5,7 +5,6 @@ namespace TestGame {
 
   export let viewport = new ƒ.Viewport();
   export let graph: ƒ.Graph;
-  export let canvas: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("Canvas");
   window.addEventListener("load", init);
 
 

@@ -2,7 +2,6 @@ declare namespace TestGame {
     import ƒ = FudgeCore;
     let viewport: ƒ.Viewport;
     let graph: ƒ.Graph;
-    let canvas: HTMLCanvasElement;
     function scanCollider(): void;
     /**
      * returns node out of _searchable node
@@ -26,6 +25,7 @@ declare namespace Script {
         private isFacingRight;
         health: Script.ComponentHealth;
         damageCooldown: Cooldown;
+        projectilePrefab: ƒ.Graph;
         private cmpAnimator;
         private avatarWalkL;
         private avatarWalkR;
@@ -35,10 +35,13 @@ declare namespace Script {
         private mousePosition;
         constructor();
         hndEvent: (_event: Event) => void;
+        start: () => void;
         getDamage: (_event: CustomEvent) => void;
         update: (_event: Event) => void;
-        getMousePosition: (_mouseEvent: MouseEvent) => void;
+        getMousePosition: (_mouseEvent: MouseEvent) => ƒ.Vector3;
         attack: (_event: MouseEvent) => void;
+        spawnProejctile(_direction: number): Promise<void>;
+        calcDegree(_center: ƒ.Vector3, _target: ƒ.Vector3): number;
     }
 }
 declare namespace Collider {
@@ -48,6 +51,16 @@ declare namespace Collider {
         radius: number;
         constructor(_position: ƒ.Vector2, _radius: number);
         collides(_collider: Collider): boolean;
+    }
+}
+declare namespace Script {
+    import ƒ = FudgeCore;
+    class ComponentBullet extends ƒ.ComponentScript {
+        static readonly iSubclass: number;
+        speed: number;
+        constructor();
+        hndEvent: (_event: Event) => void;
+        update: () => void;
     }
 }
 declare namespace Script {
