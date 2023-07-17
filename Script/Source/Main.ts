@@ -93,6 +93,7 @@ namespace TestGame {
   }
 
   function update(_event: Event): void {
+    scanCollider();
     // ƒ.Physics.simulate();  // if physics is included and used
     if (collider != null && collider.length > 0) {
       let avatarCollider: Script.ComponentCollider = collider.find(col => col.node.name == "Avatar");

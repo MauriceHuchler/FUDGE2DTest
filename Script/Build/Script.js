@@ -78,6 +78,7 @@ var TestGame;
         return result;
     }
     function update(_event) {
+        scanCollider();
         // ƒ.Physics.simulate();  // if physics is included and used
         if (collider != null && collider.length > 0) {
             let avatarCollider = collider.find(col => col.node.name == "Avatar");
@@ -180,7 +181,11 @@ var Script;
             if (this.damageCooldown.hasCooldown) {
                 return;
             }
-            this.health.getDamage(enemy.getComponent(Script.ComponentEnemy).damage, this.node);
+            let cmpEnemy = enemy.getComponent(Script.ComponentEnemy);
+            if (cmpEnemy == null) {
+                return;
+            }
+            this.health.getDamage(cmpEnemy.damage, this.node);
             this.damageCooldown.startCooldown();
         };
         update = (_event) => {
@@ -275,12 +280,15 @@ var Script;
     class ComponentBullet extends ƒ.ComponentScript {
         static iSubclass = ƒ.Component.registerSubclass(ComponentBullet);
         speed;
+        lifetime;
         constructor() {
             super();
             this.addEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
             this.addEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
             this.addEventListener("nodeDeserialized" /* NODE_DESERIALIZED */, this.hndEvent);
             this.speed = 15;
+            this.lifetime = new Script.Cooldown(3 * 60);
+            this.lifetime.onEndCooldown = this.remove;
         }
         hndEvent = (_event) => {
             switch (_event.type) {
@@ -292,6 +300,7 @@ var Script;
                     break;
                 case "nodeDeserialized" /* NODE_DESERIALIZED */:
                     ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.update);
+                    this.lifetime.startCooldown();
                     // if deserialized the node is now fully reconstructed and access to all its components and children is possible
                     break;
             }
@@ -299,6 +308,9 @@ var Script;
         update = () => {
             let deltaTime = ƒ.Loop.timeFrameGame / 1000;
             this.node.mtxLocal.translateX(this.speed * deltaTime);
+        };
+        remove = () => {
+            TestGame.graph.removeChild(this.node);
         };
     }
     Script.ComponentBullet = ComponentBullet;

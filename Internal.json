@@ -237,7 +237,7 @@
                     "direction": "diagonal",
                     "aspect": 1,
                     "pivot": {
-                      "translation": "[0, 0, 4]",
+                      "translation": "[0, 0, 6]",
                       "rotation": "[0, 180, 0]",
                       "scaling": "[1, 1, 1]"
                     },
@@ -284,7 +284,7 @@
                           "clrPrimary": "[1, 1, 1, 1]",
                           "clrSecondary": "[1, 1, 1, 1]",
                           "pivot": {
-                            "translation": "[0.375, 0.3333333432674408]",
+                            "translation": "[0.125, 0.3333333432674408]",
                             "rotation": 0,
                             "scaling": "[0.125, 0.1666666716337204]"
                           },
@@ -699,7 +699,7 @@
               "local": {
                 "translation": "[0, 0, 0]",
                 "rotation": "[0, 0, 0]",
-                "scaling": "[0.3999999165534973, 0.3999999761581421, 1]"
+                "scaling": "[0.2999999225139618, 0.29999998211860657, 1]"
               },
               "Component": {
                 "active": true
@@ -751,7 +751,7 @@
                     "clrPrimary": "[1, 1, 1, 1]",
                     "clrSecondary": "[1, 1, 1, 1]",
                     "pivot": {
-                      "translation": "[0.2499999701976776, 0]",
+                      "translation": "[0.4999999403953552, 0]",
                       "rotation": 0,
                       "scaling": "[0.25, 1]"
                     },
@@ -997,6 +997,13 @@
         "ComponentBullet": [
           {
             "Script.ComponentBullet": {
+              "active": true
+            }
+          }
+        ],
+        "ComponentCollider": [
+          {
+            "Script.ComponentCollider": {
               "active": true
             }
           }

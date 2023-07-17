@@ -58,9 +58,11 @@ declare namespace Script {
     class ComponentBullet extends ƒ.ComponentScript {
         static readonly iSubclass: number;
         speed: number;
+        private lifetime;
         constructor();
         hndEvent: (_event: Event) => void;
         update: () => void;
+        remove: () => void;
     }
 }
 declare namespace Script {

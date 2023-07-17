@@ -93,7 +93,11 @@ namespace Script {
             if (this.damageCooldown.hasCooldown) {
                 return;
             }
-            this.health.getDamage(enemy.getComponent(Script.ComponentEnemy).damage, this.node);
+            let cmpEnemy = enemy.getComponent(Script.ComponentEnemy);
+            if (cmpEnemy == null) {
+                return;
+            }
+            this.health.getDamage(cmpEnemy.damage, this.node);
             this.damageCooldown.startCooldown();
         }
 
@@ -160,7 +164,7 @@ namespace Script {
         async spawnProejctile(_direction: number) {
             let instance = await ƒ.Project.createGraphInstance(this.projectilePrefab);
             instance.mtxLocal.translation = this.node.mtxLocal.translation;
-            instance.mtxLocal.rotateZ(_direction+90);
+            instance.mtxLocal.rotateZ(_direction + 90);
             TestGame.graph.addChild(instance);
         }
 
