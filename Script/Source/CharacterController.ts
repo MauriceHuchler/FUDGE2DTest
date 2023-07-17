@@ -27,6 +27,8 @@ namespace Script {
         private currentAnimation: ƒ.AnimationSprite;
 
 
+        private mousePosition: ƒ.Vector3;
+
 
         constructor() {
             super();
@@ -47,8 +49,7 @@ namespace Script {
             this.addEventListener(ƒ.EVENT.NODE_DESERIALIZED, this.hndEvent);
             ƒ.Project.addEventListener(ƒ.EVENT.RESOURCES_LOADED, this.hndEvent);
             ƒ.Project.addEventListener("OnCollisionEvent", <EventListener>this.getDamage);
-
-
+            document.addEventListener("mousedown", this.attack);
         }
 
         // Activate the functions of this component as response to events
@@ -64,7 +65,7 @@ namespace Script {
                 case ƒ.EVENT.NODE_DESERIALIZED:
                     // if deserialized the node is now fully reconstructed and access to all its components and children is possible
                     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, this.update);
-                    this.cmpAnimator = this.node.getComponent(ƒ.ComponentAnimator);
+                    this.cmpAnimator = TestGame.getNode(this.node, "Sprite").getComponent(ƒ.ComponentAnimator);
                     break;
                 case ƒ.EVENT.RESOURCES_LOADED:
                     // start method
@@ -95,6 +96,8 @@ namespace Script {
             let inputDirection: ƒ.Vector3 = ƒ.Vector3.ZERO();
             let x = 0;
             let y = 0;
+
+
 
             if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.A, ƒ.KEYBOARD_CODE.ARROW_LEFT])) {
                 x = -1;
@@ -133,5 +136,14 @@ namespace Script {
             //   // undefined properties and private fields (#) will not be included by default
             // }
         }
+        public getMousePosition = (_mouseEvent: MouseEvent): void => {
+            let ray: ƒ.Ray = TestGame.viewport.getRayFromClient(new ƒ.Vector2(_mouseEvent.pageX - TestGame.canvas.offsetLeft, _mouseEvent.pageY - TestGame.canvas.offsetTop));
+            this.mousePosition = ray.intersectPlane(new ƒ.Vector3(0, 0, 0), new ƒ.Vector3(0, 0, 1));
+            console.log(this.mousePosition);
+        }
+        public attack = (_event: MouseEvent): void => {
+            this.getMousePosition(_event);
+        }
+
     }
 }

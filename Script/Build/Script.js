@@ -3,8 +3,9 @@ var TestGame;
 (function (TestGame) {
     var ƒ = FudgeCore;
     ƒ.Debug.info("Main Program Template running!");
+    TestGame.viewport = new ƒ.Viewport();
+    TestGame.canvas = document.getElementById("Canvas");
     window.addEventListener("load", init);
-    let viewport = new ƒ.Viewport();
     let collider;
     function init(_event) {
         let dialog /* : HTMLDialogElement */ = document.querySelector("dialog");
@@ -20,23 +21,38 @@ var TestGame;
         await ƒ.Project.loadResourcesFromHTML();
         let canvas /* : HTMLCanvasElement */ = document.querySelector("canvas");
         TestGame.graph = ƒ.Project.resources[_graphID];
-        let cmpCamera = TestGame.graph.getChildrenByName("Avatar")[0].getChildrenByName("Sprite")[0].getComponent(ƒ.ComponentCamera);
+        let avatar;
+        avatar = getNode(TestGame.graph, "Avatar");
+        let cmpCamera;
+        cmpCamera = avatar.getComponent(ƒ.ComponentCamera);
         if (!TestGame.graph) {
             alert("Nothing to render. Create a graph with at least a mesh, material and probably some light");
             return;
         }
-        viewport.initialize("MyViewport", TestGame.graph, cmpCamera, canvas);
+        TestGame.viewport.initialize("MyViewport", TestGame.graph, cmpCamera, canvas);
         ƒ.Project.dispatchEvent(new CustomEvent("GraphReady"));
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
         ƒ.Loop.start(); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
         scanCollider();
     }
     function scanCollider() {
-        let tgt = deepSearch(TestGame.graph);
-        collider = getComponentCollider(tgt);
+        collider = getComponentCollider();
         console.log(collider);
     }
     TestGame.scanCollider = scanCollider;
+    /**
+     * returns node out of _searchable node
+     */
+    function getNode(_searchable, _name) {
+        let result;
+        for (let n of _searchable.getIterator()) {
+            if (n.name == _name) {
+                result = n;
+            }
+        }
+        return result;
+    }
+    TestGame.getNode = getNode;
     function deepSearch(_node) {
         let result = [];
         function search(_node) {
@@ -52,12 +68,12 @@ var TestGame;
         search(_node);
         return result;
     }
-    function getComponentCollider(_nodes) {
+    function getComponentCollider() {
         let result = [];
-        for (let node of _nodes) {
-            let value = node.getComponent(Script.ComponentCollider);
-            if (value != null) {
-                result.push(value);
+        for (let node of TestGame.graph) {
+            let collider = node.getComponent(Script.ComponentCollider);
+            if (collider != null) {
+                result.push(collider);
             }
         }
         return result;
@@ -65,14 +81,14 @@ var TestGame;
     function update(_event) {
         // ƒ.Physics.simulate();  // if physics is included and used
         if (collider != null && collider.length > 0) {
-            let avatarCollider = collider.find(col => col.node.name == "Sprite");
+            let avatarCollider = collider.find(col => col.node.name == "Avatar");
             for (let collision of collider) {
                 if (avatarCollider.position.magnitude - collision.position.magnitude != 0) {
                     avatarCollider.collides(collision);
                 }
             }
         }
-        viewport.draw();
+        TestGame.viewport.draw();
         // ƒ.AudioManager.default.update();
     }
 })(TestGame || (TestGame = {}));
@@ -109,6 +125,7 @@ var Script;
         avatarIdleL;
         avatarIdleR;
         currentAnimation;
+        mousePosition;
         constructor() {
             super();
             // Don't start when running in editor
@@ -125,6 +142,7 @@ var Script;
             this.addEventListener("nodeDeserialized" /* NODE_DESERIALIZED */, this.hndEvent);
             ƒ.Project.addEventListener("resourcesLoaded" /* RESOURCES_LOADED */, this.hndEvent);
             ƒ.Project.addEventListener("OnCollisionEvent", this.getDamage);
+            document.addEventListener("mousedown", this.attack);
         }
         // Activate the functions of this component as response to events
         hndEvent = (_event) => {
@@ -139,7 +157,7 @@ var Script;
                 case "nodeDeserialized" /* NODE_DESERIALIZED */:
                     // if deserialized the node is now fully reconstructed and access to all its components and children is possible
                     ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.update);
-                    this.cmpAnimator = this.node.getComponent(ƒ.ComponentAnimator);
+                    this.cmpAnimator = TestGame.getNode(this.node, "Sprite").getComponent(ƒ.ComponentAnimator);
                     break;
                 case "resourcesLoaded" /* RESOURCES_LOADED */:
                     // start method
@@ -197,6 +215,14 @@ var Script;
             //   // delete properties that should not be mutated
             //   // undefined properties and private fields (#) will not be included by default
             // }
+        };
+        getMousePosition = (_mouseEvent) => {
+            let ray = TestGame.viewport.getRayFromClient(new ƒ.Vector2(_mouseEvent.pageX - TestGame.canvas.offsetLeft, _mouseEvent.pageY - TestGame.canvas.offsetTop));
+            this.mousePosition = ray.intersectPlane(new ƒ.Vector3(0, 0, 0), new ƒ.Vector3(0, 0, 1));
+            console.log(this.mousePosition);
+        };
+        attack = (_event) => {
+            this.getMousePosition(_event);
         };
     }
     Script.CharacterController = CharacterController;
@@ -307,7 +333,7 @@ var Script;
         };
         setTarget = (_event) => {
             this.enemy = new Entity.Enemy(this.walkSpeed, this.node.cmpTransform);
-            this.enemy.target = TestGame.graph.getChildrenByName("Avatar")[0].getChildrenByName("Sprite")[0];
+            this.enemy.target = TestGame.getNode(TestGame.graph, "Avatar");
             ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.update);
         };
         update = () => {
@@ -324,6 +350,8 @@ var Script;
         static iSubclass = ƒ.Component.registerSubclass(ComponentHealth);
         maxHealth;
         health;
+        healthSprite;
+        cmpAnimation;
         constructor() {
             super();
             if (ƒ.Project.mode == ƒ.MODE.EDITOR)
@@ -333,6 +361,7 @@ var Script;
             this.addEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
             this.addEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
             this.addEventListener("nodeDeserialized" /* NODE_DESERIALIZED */, this.hndEvent);
+            ƒ.Project.addEventListener("resourcesLoaded" /* RESOURCES_LOADED */, this.hndEvent);
         }
         hndEvent = (_event) => {
             switch (_event.type) {
@@ -344,6 +373,10 @@ var Script;
                     break;
                 case "nodeDeserialized" /* NODE_DESERIALIZED */:
                     // if deserialized the node is now fully reconstructed and access to all its components and children is possible
+                    this.cmpAnimation = TestGame.getNode(this.node, "Sprite").getComponent(ƒ.ComponentAnimator);
+                    break;
+                case "resourcesLoaded" /* RESOURCES_LOADED */:
+                    this.healthSprite = ƒ.Project.getResourcesByName("HealthBarSprite")[0];
                     break;
             }
         };
@@ -356,7 +389,8 @@ var Script;
                 }
                 // delete Node
             }
-            console.log(this.node.getAllComponents());
+            // console.log(this.node.getAllComponents());
+            console.log(this.cmpAnimation.animation);
         }
     }
     Script.ComponentHealth = ComponentHealth;
@@ -397,7 +431,7 @@ var Script;
             }
         };
         start = (_event) => {
-            let spawnParent = TestGame.graph.getChildrenByName("Spawn Points")[0];
+            let spawnParent = TestGame.getNode(TestGame.graph, "Spawn Points");
             this.enemySpawnpoints = spawnParent.getChildren();
             this.enemyPrefab = ƒ.Project.getResourcesByName("Enemy")[0];
         };

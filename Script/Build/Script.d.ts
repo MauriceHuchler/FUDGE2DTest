@@ -1,7 +1,13 @@
 declare namespace TestGame {
     import ƒ = FudgeCore;
+    let viewport: ƒ.Viewport;
     let graph: ƒ.Graph;
+    let canvas: HTMLCanvasElement;
     function scanCollider(): void;
+    /**
+     * returns node out of _searchable node
+     */
+    function getNode(_searchable: ƒ.Node, _name: string): ƒ.Node;
 }
 declare namespace Entity {
     import ƒ = FudgeCore;
@@ -26,10 +32,13 @@ declare namespace Script {
         private avatarIdleL;
         private avatarIdleR;
         private currentAnimation;
+        private mousePosition;
         constructor();
         hndEvent: (_event: Event) => void;
         getDamage: (_event: CustomEvent) => void;
         update: (_event: Event) => void;
+        getMousePosition: (_mouseEvent: MouseEvent) => void;
+        attack: (_event: MouseEvent) => void;
     }
 }
 declare namespace Collider {
@@ -72,6 +81,8 @@ declare namespace Script {
         static readonly iSubclass: number;
         private maxHealth;
         health: Entity.Health;
+        private healthSprite;
+        private cmpAnimation;
         constructor();
         hndEvent: (_event: Event) => void;
         getDamage(_damage: number, _node: ƒ.Node): void;

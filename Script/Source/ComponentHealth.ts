@@ -8,6 +8,9 @@ namespace Script {
         private maxHealth: number
         public health: Entity.Health;
 
+        private healthSprite: ƒ.AnimationSprite;
+        private cmpAnimation: ƒ.ComponentAnimator;
+
         constructor() {
             super();
 
@@ -20,6 +23,8 @@ namespace Script {
             this.addEventListener(ƒ.EVENT.COMPONENT_ADD, this.hndEvent);
             this.addEventListener(ƒ.EVENT.COMPONENT_REMOVE, this.hndEvent);
             this.addEventListener(ƒ.EVENT.NODE_DESERIALIZED, this.hndEvent);
+            ƒ.Project.addEventListener(ƒ.EVENT.RESOURCES_LOADED, this.hndEvent);
+
         }
 
         public hndEvent = (_event: Event): void => {
@@ -32,6 +37,10 @@ namespace Script {
                     break;
                 case ƒ.EVENT.NODE_DESERIALIZED:
                     // if deserialized the node is now fully reconstructed and access to all its components and children is possible
+                    this.cmpAnimation = TestGame.getNode(this.node,"Sprite").getComponent(ƒ.ComponentAnimator);
+                    break;
+                case ƒ.EVENT.RESOURCES_LOADED:
+                    this.healthSprite = <ƒ.AnimationSprite>ƒ.Project.getResourcesByName("HealthBarSprite")[0];
                     break;
             }
         }
@@ -45,7 +54,8 @@ namespace Script {
                 }
                 // delete Node
             }
-            console.log(this.node.getAllComponents());
+            // console.log(this.node.getAllComponents());
+            console.log(this.cmpAnimation.animation);
         }
     }
 }

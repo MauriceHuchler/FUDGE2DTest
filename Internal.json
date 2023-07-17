@@ -193,7 +193,69 @@
           "ƒ.Node": {
             "name": "Avatar",
             "active": true,
-            "components": {},
+            "components": {
+              "ComponentCollider": [
+                {
+                  "Script.ComponentCollider": {
+                    "active": true
+                  }
+                }
+              ],
+              "ComponentTransform": [
+                {
+                  "ƒ.ComponentTransform": {
+                    "local": {
+                      "translation": "[0, 0, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[0.6000000238418579, 0.6000000238418579, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ],
+              "ComponentHealth": [
+                {
+                  "Script.ComponentHealth": {
+                    "active": false
+                  }
+                }
+              ],
+              "ComponentCamera": [
+                {
+                  "ƒ.ComponentCamera": {
+                    "backgroundColor": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0,
+                      "a": 1
+                    },
+                    "backgroundEnabled": true,
+                    "projection": "central",
+                    "fieldOfView": 90,
+                    "direction": "diagonal",
+                    "aspect": 1,
+                    "pivot": {
+                      "translation": "[0, 0, 4]",
+                      "rotation": "[0, 180, 0]",
+                      "scaling": "[1, 1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ],
+              "CharacterController": [
+                {
+                  "Script.CharacterController": {
+                    "active": true,
+                    "message": "CustomComponentScript added to "
+                  }
+                }
+              ]
+            },
             "children": [
               {
                 "ƒ.Node": {
@@ -222,7 +284,7 @@
                           "clrPrimary": "[1, 1, 1, 1]",
                           "clrSecondary": "[1, 1, 1, 1]",
                           "pivot": {
-                            "translation": "[0.5, 0.3333333432674408]",
+                            "translation": "[0, 0.3333333432674408]",
                             "rotation": 0,
                             "scaling": "[0.125, 0.1666666716337204]"
                           },
@@ -245,67 +307,6 @@
                           "scale": 1,
                           "scaleWithGameTime": true,
                           "animateInEditor": true
-                        }
-                      }
-                    ],
-                    "CharacterController": [
-                      {
-                        "Script.CharacterController": {
-                          "active": false,
-                          "message": "CustomComponentScript added to "
-                        }
-                      }
-                    ],
-                    "ComponentTransform": [
-                      {
-                        "ƒ.ComponentTransform": {
-                          "local": {
-                            "translation": "[0, 0, 0]",
-                            "rotation": "[0, 0, 0]",
-                            "scaling": "[0.5, 0.5, 0.5]"
-                          },
-                          "Component": {
-                            "active": true
-                          }
-                        }
-                      }
-                    ],
-                    "ComponentHealth": [
-                      {
-                        "Script.ComponentHealth": {
-                          "active": true
-                        }
-                      }
-                    ],
-                    "ComponentCamera": [
-                      {
-                        "ƒ.ComponentCamera": {
-                          "backgroundColor": {
-                            "r": 0,
-                            "g": 0,
-                            "b": 0,
-                            "a": 1
-                          },
-                          "backgroundEnabled": true,
-                          "projection": "central",
-                          "fieldOfView": 90,
-                          "direction": "diagonal",
-                          "aspect": 1,
-                          "pivot": {
-                            "translation": "[0, 0, 6]",
-                            "rotation": "[0, 180, 0]",
-                            "scaling": "[1, 1, 1]"
-                          },
-                          "Component": {
-                            "active": true
-                          }
-                        }
-                      }
-                    ],
-                    "ComponentCollider": [
-                      {
-                        "Script.ComponentCollider": {
-                          "active": true
                         }
                       }
                     ]
@@ -725,7 +726,7 @@
       "children": [
         {
           "ƒ.Node": {
-            "name": "Sprite",
+            "name": "SpriteEnemy",
             "active": true,
             "components": {
               "ComponentMesh": [
@@ -750,7 +751,7 @@
                     "clrPrimary": "[1, 1, 1, 1]",
                     "clrSecondary": "[1, 1, 1, 1]",
                     "pivot": {
-                      "translation": "[0.4999999403953552, 0]",
+                      "translation": "[0.2499999701976776, 0]",
                       "rotation": 0,
                       "scaling": "[0.25, 1]"
                     },
@@ -852,7 +853,7 @@
       "wrap": "[0, 10]",
       "Animation": {
         "idResource": "AnimationSprite|2023-07-14T09:08:51.959Z|40136",
-        "name": "AnimationSprite",
+        "name": "HealthBarSprite",
         "labels": {},
         "events": {},
         "framesPerSecond": 25,
@@ -876,6 +877,13 @@
               "Component": {
                 "active": true
               }
+            }
+          }
+        ],
+        "ComponentHealth": [
+          {
+            "Script.ComponentHealth": {
+              "active": true
             }
           }
         ]
@@ -908,7 +916,7 @@
                     "clrPrimary": "[1, 1, 1, 1]",
                     "clrSecondary": "[1, 1, 1, 1]",
                     "pivot": {
-                      "translation": "[0.5, 0.800000011920929]",
+                      "translation": "[0.5, 0.20000000298023224]",
                       "rotation": 0,
                       "scaling": "[0.5, 0.20000000298023224]"
                     },
@@ -930,7 +938,7 @@
                     "quantization": "discrete",
                     "scale": 1,
                     "scaleWithGameTime": true,
-                    "animateInEditor": true
+                    "animateInEditor": false
                   }
                 }
               ]

@@ -45,7 +45,7 @@ namespace Script {
 
         public setTarget = (_event: CustomEvent): void => {
             this.enemy = new Entity.Enemy(this.walkSpeed, this.node.cmpTransform);
-            this.enemy.target = TestGame.graph.getChildrenByName("Avatar")[0].getChildrenByName("Sprite")[0];
+            this.enemy.target = TestGame.getNode(TestGame.graph, "Avatar");
             ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, this.update);
         }
 

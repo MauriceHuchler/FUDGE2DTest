@@ -39,7 +39,7 @@ namespace Script {
         }
 
         public start = (_event: CustomEvent): void => {
-            let spawnParent = TestGame.graph.getChildrenByName("Spawn Points")[0];
+            let spawnParent = TestGame.getNode(TestGame.graph,"Spawn Points");
             this.enemySpawnpoints = spawnParent.getChildren();
             this.enemyPrefab = <ƒ.Graph>ƒ.Project.getResourcesByName("Enemy")[0];
 
