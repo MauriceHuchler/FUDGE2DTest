@@ -18,9 +18,10 @@ declare namespace Entity {
 }
 declare namespace Script {
     import ƒ = FudgeCore;
-    class CharacterController extends ƒ.ComponentScript {
+    class CharacterController extends ƒ.ComponentScript implements Tagable {
         static readonly iSubclass: number;
         message: string;
+        tag: TAG;
         walkSpeed: number;
         private isFacingRight;
         health: Script.ComponentHealth;
@@ -55,10 +56,12 @@ declare namespace Collider {
 }
 declare namespace Script {
     import ƒ = FudgeCore;
-    class ComponentBullet extends ƒ.ComponentScript {
+    class ComponentBullet extends ƒ.ComponentScript implements Tagable {
         static readonly iSubclass: number;
         speed: number;
+        damage: number;
         private lifetime;
+        tag: TAG;
         constructor();
         hndEvent: (_event: Event) => void;
         update: () => void;
@@ -67,6 +70,14 @@ declare namespace Script {
 }
 declare namespace Script {
     import ƒ = FudgeCore;
+    enum TAG {
+        ENEMY = 0,
+        BULLET = 1,
+        AVATAR = 2
+    }
+    interface Tagable {
+        tag: TAG;
+    }
     class ComponentCollider extends ƒ.ComponentScript {
         static readonly iSubclass: number;
         position: ƒ.Vector3;
@@ -79,13 +90,15 @@ declare namespace Script {
 }
 declare namespace Script {
     import ƒ = FudgeCore;
-    class ComponentEnemy extends ƒ.ComponentScript {
+    class ComponentEnemy extends ƒ.ComponentScript implements Tagable {
         static readonly iSubclass: number;
+        tag: TAG;
         private enemy;
         walkSpeed: number;
         damage: number;
         constructor();
         hndEvent: (_event: Event) => void;
+        getDamage: (_event: CustomEvent) => void;
         setTarget: (_event: CustomEvent) => void;
         update: () => void;
     }

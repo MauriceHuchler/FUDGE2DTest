@@ -46,8 +46,8 @@ namespace TestGame {
   }
 
   export function scanCollider() {
-    collider = getComponentCollider();
-    console.log(collider);
+    collider = getAllComponentCollider();
+    // console.log(collider);
   }
 
   /**
@@ -63,25 +63,25 @@ namespace TestGame {
     return result;
   }
 
-  function deepSearch(_node: ƒ.Graph): ƒ.Node[] {
-    let result: ƒ.Node[] = [];
+  // function deepSearch(_node: ƒ.Graph): ƒ.Node[] {
+  //   let result: ƒ.Node[] = [];
 
-    function search(_node: ƒ.Node) {
-      let children: ƒ.Node[] = [];
-      children = _node.getChildren();
-      if (children.length > 0) {
-        result.push(...children);
-        for (let child of children) {
-          search(child);
-        }
-      }
-    }
+  //   function search(_node: ƒ.Node) {
+  //     let children: ƒ.Node[] = [];
+  //     children = _node.getChildren();
+  //     if (children.length > 0) {
+  //       result.push(...children);
+  //       for (let child of children) {
+  //         search(child);
+  //       }
+  //     }
+  //   }
 
-    search(_node);
-    return result;
-  }
+  //   search(_node);
+  //   return result;
+  // }
 
-  function getComponentCollider(): Script.ComponentCollider[] {
+  function getAllComponentCollider(): Script.ComponentCollider[] {
     let result: Script.ComponentCollider[] = [];
     for (let node of graph) {
       let collider = node.getComponent(Script.ComponentCollider);
@@ -97,9 +97,15 @@ namespace TestGame {
     // ƒ.Physics.simulate();  // if physics is included and used
     if (collider != null && collider.length > 0) {
       let avatarCollider: Script.ComponentCollider = collider.find(col => col.node.name == "Avatar");
+      let enemyCollider: Script.ComponentCollider[] = collider.filter(col => col.node.name == "Enemy");
       for (let collision of collider) {
-        if (avatarCollider.position.magnitude - collision.position.magnitude != 0) {
-          avatarCollider.collides(collision);
+        if (avatarCollider != null && avatarCollider.collides(collision)) {
+          ƒ.Project.dispatchEvent(new CustomEvent("AvatarCollisionEvent", { detail: collision.node }));
+        }
+        for (let enemy of enemyCollider) {
+          if (enemyCollider.length > 0 && enemy.collides(collision)) {
+            enemy.node.dispatchEvent(new CustomEvent("EnemyCollisionEvent", { detail: collision.node }));
+          };
         }
       }
     }

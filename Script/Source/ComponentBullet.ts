@@ -2,11 +2,14 @@ namespace Script {
     import ƒ = FudgeCore;
     ƒ.Project.registerScriptNamespace(Script);
 
-    export class ComponentBullet extends ƒ.ComponentScript {
+    export class ComponentBullet extends ƒ.ComponentScript implements Tagable {
         public static readonly iSubclass: number = ƒ.Component.registerSubclass(ComponentBullet);
 
         public speed: number;
+        public damage: number;
         private lifetime: Cooldown;
+        tag: TAG;
+
 
         constructor() {
             super();
@@ -16,6 +19,8 @@ namespace Script {
             this.speed = 15;
             this.lifetime = new Cooldown(3 * 60);
             this.lifetime.onEndCooldown = this.remove;
+            this.damage = 1;
+            this.tag = TAG.BULLET
         }
 
         public hndEvent = (_event: Event): void => {

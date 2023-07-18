@@ -751,7 +751,7 @@
                     "clrPrimary": "[1, 1, 1, 1]",
                     "clrSecondary": "[1, 1, 1, 1]",
                     "pivot": {
-                      "translation": "[0.4999999403953552, 0]",
+                      "translation": "[0.2499999701976776, 0]",
                       "rotation": 0,
                       "scaling": "[0.25, 1]"
                     },
@@ -997,7 +997,8 @@
         "ComponentBullet": [
           {
             "Script.ComponentBullet": {
-              "active": true
+              "active": true,
+              "speed": 15
             }
           }
         ],

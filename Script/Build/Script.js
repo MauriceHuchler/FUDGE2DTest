@@ -35,8 +35,8 @@ var TestGame;
         scanCollider();
     }
     function scanCollider() {
-        collider = getComponentCollider();
-        console.log(collider);
+        collider = getAllComponentCollider();
+        // console.log(collider);
     }
     TestGame.scanCollider = scanCollider;
     /**
@@ -52,22 +52,22 @@ var TestGame;
         return result;
     }
     TestGame.getNode = getNode;
-    function deepSearch(_node) {
-        let result = [];
-        function search(_node) {
-            let children = [];
-            children = _node.getChildren();
-            if (children.length > 0) {
-                result.push(...children);
-                for (let child of children) {
-                    search(child);
-                }
-            }
-        }
-        search(_node);
-        return result;
-    }
-    function getComponentCollider() {
+    // function deepSearch(_node: ƒ.Graph): ƒ.Node[] {
+    //   let result: ƒ.Node[] = [];
+    //   function search(_node: ƒ.Node) {
+    //     let children: ƒ.Node[] = [];
+    //     children = _node.getChildren();
+    //     if (children.length > 0) {
+    //       result.push(...children);
+    //       for (let child of children) {
+    //         search(child);
+    //       }
+    //     }
+    //   }
+    //   search(_node);
+    //   return result;
+    // }
+    function getAllComponentCollider() {
         let result = [];
         for (let node of TestGame.graph) {
             let collider = node.getComponent(Script.ComponentCollider);
@@ -82,9 +82,16 @@ var TestGame;
         // ƒ.Physics.simulate();  // if physics is included and used
         if (collider != null && collider.length > 0) {
             let avatarCollider = collider.find(col => col.node.name == "Avatar");
+            let enemyCollider = collider.filter(col => col.node.name == "Enemy");
             for (let collision of collider) {
-                if (avatarCollider.position.magnitude - collision.position.magnitude != 0) {
-                    avatarCollider.collides(collision);
+                if (avatarCollider != null && avatarCollider.collides(collision)) {
+                    ƒ.Project.dispatchEvent(new CustomEvent("AvatarCollisionEvent", { detail: collision.node }));
+                }
+                for (let enemy of enemyCollider) {
+                    if (enemyCollider.length > 0 && enemy.collides(collision)) {
+                        enemy.node.dispatchEvent(new CustomEvent("EnemyCollisionEvent", { detail: collision.node }));
+                    }
+                    ;
                 }
             }
         }
@@ -114,6 +121,7 @@ var Script;
     class CharacterController extends ƒ.ComponentScript {
         static iSubclass = ƒ.Component.registerSubclass(CharacterController);
         message = "CustomComponentScript added to ";
+        tag;
         walkSpeed;
         isFacingRight;
         health;
@@ -135,6 +143,7 @@ var Script;
             // Avatar Stats
             this.walkSpeed = 2.5;
             this.damageCooldown = new Script.Cooldown(2 * 60);
+            this.tag = Script.TAG.AVATAR;
             //get Components
             //get resources          
             // Listen to this component being added to or removed from a node
@@ -142,7 +151,7 @@ var Script;
             this.addEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
             this.addEventListener("nodeDeserialized" /* NODE_DESERIALIZED */, this.hndEvent);
             ƒ.Project.addEventListener("resourcesLoaded" /* RESOURCES_LOADED */, this.hndEvent);
-            ƒ.Project.addEventListener("OnCollisionEvent", this.getDamage);
+            ƒ.Project.addEventListener("AvatarCollisionEvent", this.getDamage);
             ƒ.Project.addEventListener("GraphReady", this.start);
             document.addEventListener("mousedown", this.attack);
         }
@@ -280,7 +289,9 @@ var Script;
     class ComponentBullet extends ƒ.ComponentScript {
         static iSubclass = ƒ.Component.registerSubclass(ComponentBullet);
         speed;
+        damage;
         lifetime;
+        tag;
         constructor() {
             super();
             this.addEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
@@ -289,6 +300,8 @@ var Script;
             this.speed = 15;
             this.lifetime = new Script.Cooldown(3 * 60);
             this.lifetime.onEndCooldown = this.remove;
+            this.damage = 1;
+            this.tag = Script.TAG.BULLET;
         }
         hndEvent = (_event) => {
             switch (_event.type) {
@@ -319,6 +332,12 @@ var Script;
 (function (Script) {
     var ƒ = FudgeCore;
     ƒ.Project.registerScriptNamespace(Script);
+    let TAG;
+    (function (TAG) {
+        TAG[TAG["ENEMY"] = 0] = "ENEMY";
+        TAG[TAG["BULLET"] = 1] = "BULLET";
+        TAG[TAG["AVATAR"] = 2] = "AVATAR";
+    })(TAG = Script.TAG || (Script.TAG = {}));
     class ComponentCollider extends ƒ.ComponentScript {
         static iSubclass = ƒ.Component.registerSubclass(ComponentCollider);
         position;
@@ -342,7 +361,7 @@ var Script;
                 case "nodeDeserialized" /* NODE_DESERIALIZED */:
                     // if deserialized the node is now fully reconstructed and access to all its components and children is possible
                     this.position = this.node.mtxLocal.translation;
-                    this.radius = this.node.mtxLocal.scaling.x / 2;
+                    this.radius = this.node.mtxLocal.scaling.x / 3;
                     ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.update);
                     break;
             }
@@ -350,7 +369,6 @@ var Script;
         collides(_collider) {
             let distance = ƒ.Vector2.DIFFERENCE(this.position.toVector2(), _collider.position.toVector2());
             if (this.radius + _collider.radius > distance.magnitude) {
-                ƒ.Project.dispatchEvent(new CustomEvent("OnCollisionEvent", { detail: _collider.node }));
                 return true;
             }
             return false;
@@ -368,6 +386,7 @@ var Script;
     ƒ.Project.registerScriptNamespace(Script);
     class ComponentEnemy extends ƒ.ComponentScript {
         static iSubclass = ƒ.Component.registerSubclass(ComponentEnemy);
+        tag;
         enemy;
         walkSpeed;
         damage;
@@ -377,6 +396,7 @@ var Script;
             if (ƒ.Project.mode == ƒ.MODE.EDITOR)
                 return;
             this.damage = 1;
+            this.tag = Script.TAG.ENEMY;
             // Listen to this component being added to or removed from a node
             this.addEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
             this.addEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
@@ -394,10 +414,30 @@ var Script;
                     break;
                 case "nodeDeserialized" /* NODE_DESERIALIZED */:
                     // if deserialized the node is now fully reconstructed and access to all its components and children is possible
+                    this.node.addEventListener("EnemyCollisionEvent", this.getDamage);
                     break;
                 case "resourcesLoaded" /* RESOURCES_LOADED */:
                     break;
             }
+        };
+        getDamage = (_event) => {
+            let bullet = _event.detail;
+            let cmpBullet = bullet.getComponent(Script.ComponentBullet);
+            if (cmpBullet == null) {
+                return;
+            }
+            let cmpHealth;
+            for (let node of this.node.getIterator()) {
+                let cmp = node.getComponent(Script.ComponentHealth);
+                if (cmp != null) {
+                    cmpHealth = cmp;
+                    break;
+                }
+            }
+            if (cmpHealth == null) {
+                return;
+            }
+            cmpHealth.getDamage(cmpBullet.damage, this.node);
         };
         setTarget = (_event) => {
             this.enemy = new Entity.Enemy(this.walkSpeed, this.node.cmpTransform);

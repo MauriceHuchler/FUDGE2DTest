@@ -2,6 +2,17 @@ namespace Script {
     import ƒ = FudgeCore;
     ƒ.Project.registerScriptNamespace(Script);
 
+    export enum TAG {
+        ENEMY,
+        BULLET,
+        AVATAR
+    }
+
+    export interface Tagable {
+        tag: TAG;
+    }
+
+
     export class ComponentCollider extends ƒ.ComponentScript {
         public static readonly iSubclass: number = ƒ.Component.registerSubclass(ComponentCollider);
         public position: ƒ.Vector3;
@@ -32,7 +43,7 @@ namespace Script {
                 case ƒ.EVENT.NODE_DESERIALIZED:
                     // if deserialized the node is now fully reconstructed and access to all its components and children is possible
                     this.position = this.node.mtxLocal.translation;
-                    this.radius = this.node.mtxLocal.scaling.x / 2;
+                    this.radius = this.node.mtxLocal.scaling.x / 3;
                     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, this.update);
 
                     break;
@@ -42,7 +53,6 @@ namespace Script {
         public collides(_collider: ComponentCollider): boolean {
             let distance: ƒ.Vector2 = ƒ.Vector2.DIFFERENCE(this.position.toVector2(), _collider.position.toVector2());
             if (this.radius + _collider.radius > distance.magnitude) {
-                ƒ.Project.dispatchEvent(new CustomEvent("OnCollisionEvent", {detail: _collider.node}));
                 return true;
             }
             return false;
@@ -56,5 +66,7 @@ namespace Script {
 
 
     }
+
+
 
 }

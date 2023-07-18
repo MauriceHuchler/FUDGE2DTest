@@ -4,11 +4,11 @@ namespace Script {
 
 
 
-    export class CharacterController extends ƒ.ComponentScript {
+    export class CharacterController extends ƒ.ComponentScript implements Tagable {
         public static readonly iSubclass: number = ƒ.Component.registerSubclass(CharacterController);
 
         public message: string = "CustomComponentScript added to ";
-
+        tag: TAG;
         public walkSpeed: number;
         private isFacingRight: boolean;
         public health: Script.ComponentHealth;
@@ -41,6 +41,7 @@ namespace Script {
             // Avatar Stats
             this.walkSpeed = 2.5;
             this.damageCooldown = new Cooldown(2 * 60);
+            this.tag = TAG.AVATAR;
             //get Components
 
             //get resources          
@@ -50,7 +51,7 @@ namespace Script {
             this.addEventListener(ƒ.EVENT.COMPONENT_REMOVE, this.hndEvent);
             this.addEventListener(ƒ.EVENT.NODE_DESERIALIZED, this.hndEvent);
             ƒ.Project.addEventListener(ƒ.EVENT.RESOURCES_LOADED, this.hndEvent);
-            ƒ.Project.addEventListener("OnCollisionEvent", <EventListener>this.getDamage);
+            ƒ.Project.addEventListener( "AvatarCollisionEvent", <EventListener>this.getDamage);
             ƒ.Project.addEventListener("GraphReady", <EventListener>this.start);
             document.addEventListener("mousedown", this.attack);
         }

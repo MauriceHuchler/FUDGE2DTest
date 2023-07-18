@@ -2,9 +2,9 @@ namespace Script {
     import ƒ = FudgeCore;
     ƒ.Project.registerScriptNamespace(Script);
 
-    export class ComponentEnemy extends ƒ.ComponentScript {
+    export class ComponentEnemy extends ƒ.ComponentScript implements Tagable {
         public static readonly iSubclass: number = ƒ.Component.registerSubclass(ComponentEnemy);
-
+        tag: TAG;
         private enemy: Entity.Enemy;
         public walkSpeed: number;
         public damage: number
@@ -15,7 +15,7 @@ namespace Script {
             if (ƒ.Project.mode == ƒ.MODE.EDITOR)
                 return;
             this.damage = 1;
-
+            this.tag = TAG.ENEMY;
 
             // Listen to this component being added to or removed from a node
             this.addEventListener(ƒ.EVENT.COMPONENT_ADD, this.hndEvent);
@@ -23,6 +23,7 @@ namespace Script {
             this.addEventListener(ƒ.EVENT.NODE_DESERIALIZED, this.hndEvent);
             ƒ.Project.addEventListener(ƒ.EVENT.RESOURCES_LOADED, this.hndEvent);
             ƒ.Project.addEventListener("SetTarget", <EventListener>this.setTarget);
+
 
         }
 
@@ -36,11 +37,33 @@ namespace Script {
                     break;
                 case ƒ.EVENT.NODE_DESERIALIZED:
                     // if deserialized the node is now fully reconstructed and access to all its components and children is possible
+                    this.node.addEventListener("EnemyCollisionEvent", <EventListener>this.getDamage);
+
                     break;
                 case ƒ.EVENT.RESOURCES_LOADED:
                     break;
 
             }
+        }
+
+        public getDamage = (_event: CustomEvent) => {
+            let bullet: ƒ.Node = _event.detail;
+            let cmpBullet: Script.ComponentBullet = bullet.getComponent(Script.ComponentBullet);
+            if (cmpBullet == null) {
+                return;
+            }
+            let cmpHealth: Script.ComponentHealth;
+            for (let node of this.node.getIterator()) {
+                let cmp: Script.ComponentHealth = node.getComponent(Script.ComponentHealth);
+                if (cmp != null) {
+                    cmpHealth = cmp;
+                    break;
+                }
+            }
+            if (cmpHealth == null) {
+                return;
+            }
+            cmpHealth.getDamage(cmpBullet.damage, this.node);
         }
 
         public setTarget = (_event: CustomEvent): void => {
