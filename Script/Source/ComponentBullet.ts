@@ -19,7 +19,7 @@ namespace Script {
             this.speed = 15;
             this.lifetime = new Cooldown(3 * 60);
             this.lifetime.onEndCooldown = this.remove;
-            this.damage = 1;
+            this.damage = 5;
             this.tag = TAG.BULLET
         }
 

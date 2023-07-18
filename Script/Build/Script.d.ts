@@ -107,8 +107,8 @@ declare namespace Script {
     import ƒ = FudgeCore;
     class ComponentHealth extends ƒ.ComponentScript {
         static readonly iSubclass: number;
-        private maxHealth;
         health: Entity.Health;
+        private maxHealth;
         private healthSprite;
         private cmpAnimation;
         constructor();

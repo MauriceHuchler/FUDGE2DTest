@@ -5,8 +5,8 @@ namespace Script {
     export class ComponentHealth extends ƒ.ComponentScript {
         public static readonly iSubclass: number = ƒ.Component.registerSubclass(ComponentHealth);
 
-        private maxHealth: number
         public health: Entity.Health;
+        private maxHealth: number;
 
         private healthSprite: ƒ.AnimationSprite;
         private cmpAnimation: ƒ.ComponentAnimator;
@@ -17,7 +17,7 @@ namespace Script {
             if (ƒ.Project.mode == ƒ.MODE.EDITOR)
                 return;
 
-            this.maxHealth = 50;
+            this.maxHealth = 10;
             this.health = new Entity.Health(this.maxHealth)
 
             this.addEventListener(ƒ.EVENT.COMPONENT_ADD, this.hndEvent);
@@ -37,7 +37,7 @@ namespace Script {
                     break;
                 case ƒ.EVENT.NODE_DESERIALIZED:
                     // if deserialized the node is now fully reconstructed and access to all its components and children is possible
-                    this.cmpAnimation = TestGame.getNode(this.node,"Sprite").getComponent(ƒ.ComponentAnimator);
+                    this.cmpAnimation = TestGame.getNode(this.node, "Sprite").getComponent(ƒ.ComponentAnimator);
                     break;
                 case ƒ.EVENT.RESOURCES_LOADED:
                     this.healthSprite = <ƒ.AnimationSprite>ƒ.Project.getResourcesByName("HealthBarSprite")[0];

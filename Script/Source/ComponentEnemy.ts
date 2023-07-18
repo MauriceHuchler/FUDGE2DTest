@@ -64,6 +64,7 @@ namespace Script {
                 return;
             }
             cmpHealth.getDamage(cmpBullet.damage, this.node);
+            TestGame.graph.removeChild(bullet);
         }
 
         public setTarget = (_event: CustomEvent): void => {

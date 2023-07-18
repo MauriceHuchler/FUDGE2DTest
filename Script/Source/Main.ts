@@ -50,6 +50,24 @@ namespace TestGame {
     // console.log(collider);
   }
 
+  function collisionEvents() {
+    if (collider != null && collider.length > 0) {
+      let avatarCollider: Script.ComponentCollider = collider.find(col => col.node.name == "Avatar");
+      let enemyCollider: Script.ComponentCollider[] = collider.filter(col => col.node.name == "Enemy");
+      for (let collision of collider) {
+        if (avatarCollider != null && avatarCollider.collides(collision)) {
+          ƒ.Project.dispatchEvent(new CustomEvent("AvatarCollisionEvent", { detail: collision.node }));
+        }
+        //enemies
+        for (let enemy of enemyCollider) {
+          if (enemyCollider.length > 0 && enemy.collides(collision)) {
+            enemy.node.dispatchEvent(new CustomEvent("EnemyCollisionEvent", { detail: collision.node }));
+          };
+        }
+      }
+    }
+  }
+
   /**
    * returns node out of _searchable node
    */
@@ -94,21 +112,9 @@ namespace TestGame {
 
   function update(_event: Event): void {
     scanCollider();
+    collisionEvents();
     // ƒ.Physics.simulate();  // if physics is included and used
-    if (collider != null && collider.length > 0) {
-      let avatarCollider: Script.ComponentCollider = collider.find(col => col.node.name == "Avatar");
-      let enemyCollider: Script.ComponentCollider[] = collider.filter(col => col.node.name == "Enemy");
-      for (let collision of collider) {
-        if (avatarCollider != null && avatarCollider.collides(collision)) {
-          ƒ.Project.dispatchEvent(new CustomEvent("AvatarCollisionEvent", { detail: collision.node }));
-        }
-        for (let enemy of enemyCollider) {
-          if (enemyCollider.length > 0 && enemy.collides(collision)) {
-            enemy.node.dispatchEvent(new CustomEvent("EnemyCollisionEvent", { detail: collision.node }));
-          };
-        }
-      }
-    }
+
     viewport.draw();
     // ƒ.AudioManager.default.update();
   }

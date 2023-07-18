@@ -39,6 +39,24 @@ var TestGame;
         // console.log(collider);
     }
     TestGame.scanCollider = scanCollider;
+    function collisionEvents() {
+        if (collider != null && collider.length > 0) {
+            let avatarCollider = collider.find(col => col.node.name == "Avatar");
+            let enemyCollider = collider.filter(col => col.node.name == "Enemy");
+            for (let collision of collider) {
+                if (avatarCollider != null && avatarCollider.collides(collision)) {
+                    ƒ.Project.dispatchEvent(new CustomEvent("AvatarCollisionEvent", { detail: collision.node }));
+                }
+                //enemies
+                for (let enemy of enemyCollider) {
+                    if (enemyCollider.length > 0 && enemy.collides(collision)) {
+                        enemy.node.dispatchEvent(new CustomEvent("EnemyCollisionEvent", { detail: collision.node }));
+                    }
+                    ;
+                }
+            }
+        }
+    }
     /**
      * returns node out of _searchable node
      */
@@ -79,22 +97,8 @@ var TestGame;
     }
     function update(_event) {
         scanCollider();
+        collisionEvents();
         // ƒ.Physics.simulate();  // if physics is included and used
-        if (collider != null && collider.length > 0) {
-            let avatarCollider = collider.find(col => col.node.name == "Avatar");
-            let enemyCollider = collider.filter(col => col.node.name == "Enemy");
-            for (let collision of collider) {
-                if (avatarCollider != null && avatarCollider.collides(collision)) {
-                    ƒ.Project.dispatchEvent(new CustomEvent("AvatarCollisionEvent", { detail: collision.node }));
-                }
-                for (let enemy of enemyCollider) {
-                    if (enemyCollider.length > 0 && enemy.collides(collision)) {
-                        enemy.node.dispatchEvent(new CustomEvent("EnemyCollisionEvent", { detail: collision.node }));
-                    }
-                    ;
-                }
-            }
-        }
         TestGame.viewport.draw();
         // ƒ.AudioManager.default.update();
     }
@@ -300,7 +304,7 @@ var Script;
             this.speed = 15;
             this.lifetime = new Script.Cooldown(3 * 60);
             this.lifetime.onEndCooldown = this.remove;
-            this.damage = 1;
+            this.damage = 5;
             this.tag = Script.TAG.BULLET;
         }
         hndEvent = (_event) => {
@@ -438,6 +442,7 @@ var Script;
                 return;
             }
             cmpHealth.getDamage(cmpBullet.damage, this.node);
+            TestGame.graph.removeChild(bullet);
         };
         setTarget = (_event) => {
             this.enemy = new Entity.Enemy(this.walkSpeed, this.node.cmpTransform);
@@ -456,15 +461,15 @@ var Script;
     ƒ.Project.registerScriptNamespace(Script);
     class ComponentHealth extends ƒ.ComponentScript {
         static iSubclass = ƒ.Component.registerSubclass(ComponentHealth);
-        maxHealth;
         health;
+        maxHealth;
         healthSprite;
         cmpAnimation;
         constructor() {
             super();
             if (ƒ.Project.mode == ƒ.MODE.EDITOR)
                 return;
-            this.maxHealth = 50;
+            this.maxHealth = 10;
             this.health = new Entity.Health(this.maxHealth);
             this.addEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
             this.addEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);

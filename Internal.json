@@ -883,7 +883,8 @@
         "ComponentHealth": [
           {
             "Script.ComponentHealth": {
-              "active": true
+              "active": true,
+              "maxHealth": "20"
             }
           }
         ]
@@ -998,7 +999,9 @@
           {
             "Script.ComponentBullet": {
               "active": true,
-              "speed": 15
+              "speed": 15,
+              "damage": 5,
+              "tag": 1
             }
           }
         ],
