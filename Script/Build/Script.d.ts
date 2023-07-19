@@ -174,3 +174,12 @@ declare namespace Entity {
         getDamage(_damage: number): void;
     }
 }
+declare namespace TestGame {
+    enum SOUNDS {
+        AVATARWALK = 0,
+        AVATARSHOOT = 1,
+        ENEMYWALK = 2,
+        ENEMYSHOOT = 3
+    }
+    function getSoundByName(_name: SOUNDS): ƒ.ComponentAudio;
+}

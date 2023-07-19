@@ -51,7 +51,7 @@ namespace Script {
             this.addEventListener(ƒ.EVENT.COMPONENT_REMOVE, this.hndEvent);
             this.addEventListener(ƒ.EVENT.NODE_DESERIALIZED, this.hndEvent);
             ƒ.Project.addEventListener(ƒ.EVENT.RESOURCES_LOADED, this.hndEvent);
-            ƒ.Project.addEventListener( "AvatarCollisionEvent", <EventListener>this.getDamage);
+            ƒ.Project.addEventListener("AvatarCollisionEvent", <EventListener>this.getDamage);
             ƒ.Project.addEventListener("GraphReady", <EventListener>this.start);
             document.addEventListener("mousedown", this.attack);
         }
@@ -133,9 +133,15 @@ namespace Script {
             //check face direction
             if (x != 0 || y != 0) {
                 this.isFacingRight ? this.currentAnimation = this.avatarWalkR : this.currentAnimation = this.avatarWalkL;
+                let sound = TestGame.getSoundByName(TestGame.SOUNDS.AVATARWALK);
+                if (!sound.isPlaying) {
+                    sound.play(true);
+                }
             }
             else {
                 this.isFacingRight ? this.currentAnimation = this.avatarIdleR : this.currentAnimation = this.avatarIdleL;
+                TestGame.getSoundByName(TestGame.SOUNDS.AVATARWALK).play(false);
+
             }
 
             this.cmpAnimator.animation = this.currentAnimation;
@@ -160,6 +166,9 @@ namespace Script {
             let direction = this.calcDegree(this.node.mtxLocal.translation, this.mousePosition);
             // console.log(direction);
             this.spawnProejctile(direction);
+            let sound = TestGame.getSoundByName(TestGame.SOUNDS.AVATARSHOOT);
+            sound.play(true);
+
         }
 
         async spawnProejctile(_direction: number) {

@@ -70,21 +70,6 @@ var TestGame;
         return result;
     }
     TestGame.getNode = getNode;
-    // function deepSearch(_node: ƒ.Graph): ƒ.Node[] {
-    //   let result: ƒ.Node[] = [];
-    //   function search(_node: ƒ.Node) {
-    //     let children: ƒ.Node[] = [];
-    //     children = _node.getChildren();
-    //     if (children.length > 0) {
-    //       result.push(...children);
-    //       for (let child of children) {
-    //         search(child);
-    //       }
-    //     }
-    //   }
-    //   search(_node);
-    //   return result;
-    // }
     function getAllComponentCollider() {
         let result = [];
         for (let node of TestGame.graph) {
@@ -227,9 +212,14 @@ var Script;
             //check face direction
             if (x != 0 || y != 0) {
                 this.isFacingRight ? this.currentAnimation = this.avatarWalkR : this.currentAnimation = this.avatarWalkL;
+                let sound = TestGame.getSoundByName(TestGame.SOUNDS.AVATARWALK);
+                if (!sound.isPlaying) {
+                    sound.play(true);
+                }
             }
             else {
                 this.isFacingRight ? this.currentAnimation = this.avatarIdleR : this.currentAnimation = this.avatarIdleL;
+                TestGame.getSoundByName(TestGame.SOUNDS.AVATARWALK).play(false);
             }
             this.cmpAnimator.animation = this.currentAnimation;
             this.node.mtxLocal.translate(ƒ.Vector3.SCALE(inputDirection, deltaTime * this.walkSpeed));
@@ -250,6 +240,8 @@ var Script;
             let direction = this.calcDegree(this.node.mtxLocal.translation, this.mousePosition);
             // console.log(direction);
             this.spawnProejctile(direction);
+            let sound = TestGame.getSoundByName(TestGame.SOUNDS.AVATARSHOOT);
+            sound.play(true);
         };
         async spawnProejctile(_direction) {
             let instance = await ƒ.Project.createGraphInstance(this.projectilePrefab);
@@ -701,4 +693,35 @@ var Entity;
     }
     Entity.Health = Health;
 })(Entity || (Entity = {}));
+var TestGame;
+(function (TestGame) {
+    let SOUNDS;
+    (function (SOUNDS) {
+        SOUNDS[SOUNDS["AVATARWALK"] = 0] = "AVATARWALK";
+        SOUNDS[SOUNDS["AVATARSHOOT"] = 1] = "AVATARSHOOT";
+        SOUNDS[SOUNDS["ENEMYWALK"] = 2] = "ENEMYWALK";
+        SOUNDS[SOUNDS["ENEMYSHOOT"] = 3] = "ENEMYSHOOT";
+    })(SOUNDS = TestGame.SOUNDS || (TestGame.SOUNDS = {}));
+    const avatarWalkAudio = new ƒ.Audio("Sounds/avatarWalk.mp3");
+    const cmpAvatarWalk = new ƒ.ComponentAudio(avatarWalkAudio, true, false);
+    cmpAvatarWalk.connect(true);
+    cmpAvatarWalk.volume = .08;
+    const avatarShootAudio = new ƒ.Audio("Sounds/avatarShoot.mp3");
+    const cmpAvatarShoot = new ƒ.ComponentAudio(avatarShootAudio, false, false);
+    cmpAvatarShoot.connect(true);
+    cmpAvatarShoot.volume = .4;
+    function getSoundByName(_name) {
+        switch (_name) {
+            case SOUNDS.AVATARWALK:
+                return cmpAvatarWalk;
+            case SOUNDS.AVATARSHOOT:
+                return cmpAvatarShoot;
+            case SOUNDS.ENEMYSHOOT:
+                break;
+            case SOUNDS.ENEMYWALK:
+                break;
+        }
+    }
+    TestGame.getSoundByName = getSoundByName;
+})(TestGame || (TestGame = {}));
 //# sourceMappingURL=Script.js.map

@@ -81,23 +81,6 @@ namespace TestGame {
     return result;
   }
 
-  // function deepSearch(_node: ƒ.Graph): ƒ.Node[] {
-  //   let result: ƒ.Node[] = [];
-
-  //   function search(_node: ƒ.Node) {
-  //     let children: ƒ.Node[] = [];
-  //     children = _node.getChildren();
-  //     if (children.length > 0) {
-  //       result.push(...children);
-  //       for (let child of children) {
-  //         search(child);
-  //       }
-  //     }
-  //   }
-
-  //   search(_node);
-  //   return result;
-  // }
 
   function getAllComponentCollider(): Script.ComponentCollider[] {
     let result: Script.ComponentCollider[] = [];
@@ -113,6 +96,7 @@ namespace TestGame {
   function update(_event: Event): void {
     scanCollider();
     collisionEvents();
+
     // ƒ.Physics.simulate();  // if physics is included and used
 
     viewport.draw();
