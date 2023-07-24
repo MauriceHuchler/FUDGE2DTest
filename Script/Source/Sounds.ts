@@ -21,7 +21,7 @@ namespace TestGame {
             case SOUNDS.AVATARWALK:
                 return cmpAvatarWalk;
             case SOUNDS.AVATARSHOOT:
-                return cmpAvatarShoot:
+                return cmpAvatarShoot;
             case SOUNDS.ENEMYSHOOT:
                 break;
             case SOUNDS.ENEMYWALK:

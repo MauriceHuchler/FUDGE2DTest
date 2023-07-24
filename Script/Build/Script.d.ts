@@ -26,7 +26,9 @@ declare namespace Script {
         private isFacingRight;
         health: Script.ComponentHealth;
         damageCooldown: Cooldown;
+        shootCooldown: Cooldown;
         projectilePrefab: ƒ.Graph;
+        healthNumberHTML: HTMLElement;
         private cmpAnimator;
         private avatarWalkL;
         private avatarWalkR;
@@ -38,6 +40,7 @@ declare namespace Script {
         hndEvent: (_event: Event) => void;
         start: () => void;
         getDamage: (_event: CustomEvent) => void;
+        protected setHealthHTML(_health: number): void;
         update: (_event: Event) => void;
         getMousePosition: (_mouseEvent: MouseEvent) => ƒ.Vector3;
         attack: (_event: MouseEvent) => void;
@@ -108,7 +111,7 @@ declare namespace Script {
     class ComponentHealth extends ƒ.ComponentScript {
         static readonly iSubclass: number;
         health: Entity.Health;
-        private maxHealth;
+        maxHealth: number;
         private healthSprite;
         private cmpAnimation;
         constructor();
@@ -125,11 +128,13 @@ declare namespace Script {
         counter: number;
         spawnCooldown: Cooldown;
         numberOfEnemies: number;
+        numberEnemiesHTML: HTMLElement;
         constructor();
         hndEvent: (_event: Event) => void;
         start: (_event: CustomEvent) => void;
         update: (_event: Event) => void;
         spawnEnemies(): Promise<void>;
+        private setHTMLText;
     }
 }
 declare namespace Script {
@@ -167,10 +172,14 @@ declare namespace Entity {
     }
 }
 declare namespace Entity {
-    class Health {
+    import ƒ = FudgeCore;
+    class Health extends ƒ.Mutable implements ƒ.Serializable {
         private maxHealth;
         currentHealth: number;
         constructor(_maxHealth: number);
+        serialize(): ƒ.Serialization;
+        deserialize(_serialization: ƒ.Serialization): Promise<ƒ.Serializable>;
+        protected reduceMutator(_mutator: ƒ.Mutator): void;
         getDamage(_damage: number): void;
     }
 }

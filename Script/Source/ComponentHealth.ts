@@ -6,7 +6,7 @@ namespace Script {
         public static readonly iSubclass: number = ƒ.Component.registerSubclass(ComponentHealth);
 
         public health: Entity.Health;
-        private maxHealth: number;
+        public maxHealth: number;
 
         private healthSprite: ƒ.AnimationSprite;
         private cmpAnimation: ƒ.ComponentAnimator;
@@ -18,7 +18,7 @@ namespace Script {
                 return;
 
             this.maxHealth = 10;
-            this.health = new Entity.Health(this.maxHealth)
+            this.health = new Entity.Health(this.maxHealth);
 
             this.addEventListener(ƒ.EVENT.COMPONENT_ADD, this.hndEvent);
             this.addEventListener(ƒ.EVENT.COMPONENT_REMOVE, this.hndEvent);

@@ -13,9 +13,10 @@ namespace Script {
         private isFacingRight: boolean;
         public health: Script.ComponentHealth;
         public damageCooldown: Cooldown;
+        public shootCooldown: Cooldown;
 
         public projectilePrefab: ƒ.Graph;
-
+        public healthNumberHTML: HTMLElement;
 
         private cmpAnimator: ƒ.ComponentAnimator;
 
@@ -41,6 +42,7 @@ namespace Script {
             // Avatar Stats
             this.walkSpeed = 2.5;
             this.damageCooldown = new Cooldown(2 * 60);
+            this.shootCooldown = new Cooldown(1.5 * 60);
             this.tag = TAG.AVATAR;
             //get Components
 
@@ -74,6 +76,8 @@ namespace Script {
                 case ƒ.EVENT.RESOURCES_LOADED:
                     // start method
                     this.health = this.node.getComponent(ComponentHealth);
+                    this.healthNumberHTML = document.getElementById("HealthNumber");
+                    this.healthNumberHTML.innerText = this.health.health.currentHealth.toString();
 
                     this.avatarWalkL = <ƒ.AnimationSprite>ƒ.Project.getResourcesByName("AvatarWalkL")[0];
                     this.avatarIdleL = <ƒ.AnimationSprite>ƒ.Project.getResourcesByName("AvatarIdleL")[0];
@@ -100,6 +104,17 @@ namespace Script {
             }
             this.health.getDamage(cmpEnemy.damage, this.node);
             this.damageCooldown.startCooldown();
+            this.setHealthHTML(this.health.health.currentHealth);
+        }
+
+        protected setHealthHTML(_health: number) {
+            this.healthNumberHTML.innerText = _health.toString();
+            if (_health < 6) {
+                this.healthNumberHTML.setAttribute("style", "color:orange;");
+            }
+            if (_health < 4) {
+                this.healthNumberHTML.setAttribute("style", "color:red;");
+            }
         }
 
 
@@ -162,10 +177,13 @@ namespace Script {
             return shootDirection;
         }
         public attack = (_event: MouseEvent): void => {
+            if (this.shootCooldown.hasCooldown) {
+                return;
+            }
             let mousePos = this.getMousePosition(_event);
             let direction = this.calcDegree(this.node.mtxLocal.translation, this.mousePosition);
-            // console.log(direction);
             this.spawnProejctile(direction);
+            this.shootCooldown.startCooldown();
             let sound = TestGame.getSoundByName(TestGame.SOUNDS.AVATARSHOOT);
             sound.play(true);
 

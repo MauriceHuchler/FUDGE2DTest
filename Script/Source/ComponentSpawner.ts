@@ -9,6 +9,7 @@ namespace Script {
         public counter: number
         public spawnCooldown: Cooldown;
         public numberOfEnemies: number;
+        public numberEnemiesHTML: HTMLElement;
 
         constructor() {
 
@@ -18,7 +19,7 @@ namespace Script {
             this.addEventListener(ƒ.EVENT.NODE_DESERIALIZED, this.hndEvent);
             ƒ.Project.addEventListener("GraphReady", <EventListener>this.start);
             this.counter = 0;
-            this.numberOfEnemies = 3;
+            this.numberOfEnemies = 4;
             this.spawnCooldown = new Cooldown(3 * 60);
         }
 
@@ -32,14 +33,15 @@ namespace Script {
                     break;
                 case ƒ.EVENT.NODE_DESERIALIZED:
                     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, this.update);
-
+                    this.numberEnemiesHTML = document.getElementById("EnemyNumber");
+                    this.numberEnemiesHTML.innerText = this.numberOfEnemies.toString();
                     // if deserialized the node is now fully reconstructed and access to all its components and children is possible
                     break;
             }
         }
 
         public start = (_event: CustomEvent): void => {
-            let spawnParent = TestGame.getNode(TestGame.graph,"Spawn Points");
+            let spawnParent = TestGame.getNode(TestGame.graph, "Spawn Points");
             this.enemySpawnpoints = spawnParent.getChildren();
             this.enemyPrefab = <ƒ.Graph>ƒ.Project.getResourcesByName("Enemy")[0];
 
@@ -51,20 +53,25 @@ namespace Script {
                     return;
                 }
                 this.spawnEnemies();
-                this.spawnCooldown.startCooldown()
-                this.numberOfEnemies--;
+
             }
         }
         async spawnEnemies() {
-            let nextSpawnPosition: ƒ.Vector3 = this.enemySpawnpoints[this.counter % 4].mtxLocal.translation;
+            let nextSpawnPosition: ƒ.Vector3 = this.enemySpawnpoints[this.counter % 3].mtxLocal.translation;
             this.counter++;
             this.enemyPrefab.mtxLocal.translation = nextSpawnPosition;
-
+            this.spawnCooldown.startCooldown();
+            this.numberOfEnemies--;
+            this.setHTMLText(this.numberOfEnemies);
 
             let instance = await ƒ.Project.createGraphInstance(this.enemyPrefab);
             TestGame.graph.addChild(instance);
             ƒ.Project.dispatchEvent(new CustomEvent("SetTarget"));
             TestGame.scanCollider();
+        }
+
+        private setHTMLText(_number: number) {
+            this.numberEnemiesHTML.innerText = _number.toString();
         }
 
 

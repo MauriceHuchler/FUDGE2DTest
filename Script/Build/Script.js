@@ -115,7 +115,9 @@ var Script;
         isFacingRight;
         health;
         damageCooldown;
+        shootCooldown;
         projectilePrefab;
+        healthNumberHTML;
         cmpAnimator;
         //Animation Sprites
         avatarWalkL;
@@ -132,6 +134,7 @@ var Script;
             // Avatar Stats
             this.walkSpeed = 2.5;
             this.damageCooldown = new Script.Cooldown(2 * 60);
+            this.shootCooldown = new Script.Cooldown(1.5 * 60);
             this.tag = Script.TAG.AVATAR;
             //get Components
             //get resources          
@@ -162,6 +165,8 @@ var Script;
                 case "resourcesLoaded" /* RESOURCES_LOADED */:
                     // start method
                     this.health = this.node.getComponent(Script.ComponentHealth);
+                    this.healthNumberHTML = document.getElementById("HealthNumber");
+                    this.healthNumberHTML.innerText = this.health.health.currentHealth.toString();
                     this.avatarWalkL = ƒ.Project.getResourcesByName("AvatarWalkL")[0];
                     this.avatarIdleL = ƒ.Project.getResourcesByName("AvatarIdleL")[0];
                     this.avatarIdleR = ƒ.Project.getResourcesByName("AvatarIdleR")[0];
@@ -185,7 +190,17 @@ var Script;
             }
             this.health.getDamage(cmpEnemy.damage, this.node);
             this.damageCooldown.startCooldown();
+            this.setHealthHTML(this.health.health.currentHealth);
         };
+        setHealthHTML(_health) {
+            this.healthNumberHTML.innerText = _health.toString();
+            if (_health < 6) {
+                this.healthNumberHTML.setAttribute("style", "color:orange;");
+            }
+            if (_health < 4) {
+                this.healthNumberHTML.setAttribute("style", "color:red;");
+            }
+        }
         update = (_event) => {
             let deltaTime = ƒ.Loop.timeFrameGame / 1000;
             let inputDirection = ƒ.Vector3.ZERO();
@@ -236,10 +251,13 @@ var Script;
             return shootDirection;
         };
         attack = (_event) => {
+            if (this.shootCooldown.hasCooldown) {
+                return;
+            }
             let mousePos = this.getMousePosition(_event);
             let direction = this.calcDegree(this.node.mtxLocal.translation, this.mousePosition);
-            // console.log(direction);
             this.spawnProejctile(direction);
+            this.shootCooldown.startCooldown();
             let sound = TestGame.getSoundByName(TestGame.SOUNDS.AVATARSHOOT);
             sound.play(true);
         };
@@ -512,6 +530,7 @@ var Script;
         counter;
         spawnCooldown;
         numberOfEnemies;
+        numberEnemiesHTML;
         constructor() {
             super();
             this.addEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
@@ -519,7 +538,7 @@ var Script;
             this.addEventListener("nodeDeserialized" /* NODE_DESERIALIZED */, this.hndEvent);
             ƒ.Project.addEventListener("GraphReady", this.start);
             this.counter = 0;
-            this.numberOfEnemies = 3;
+            this.numberOfEnemies = 4;
             this.spawnCooldown = new Script.Cooldown(3 * 60);
         }
         hndEvent = (_event) => {
@@ -532,6 +551,8 @@ var Script;
                     break;
                 case "nodeDeserialized" /* NODE_DESERIALIZED */:
                     ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.update);
+                    this.numberEnemiesHTML = document.getElementById("EnemyNumber");
+                    this.numberEnemiesHTML.innerText = this.numberOfEnemies.toString();
                     // if deserialized the node is now fully reconstructed and access to all its components and children is possible
                     break;
             }
@@ -547,18 +568,22 @@ var Script;
                     return;
                 }
                 this.spawnEnemies();
-                this.spawnCooldown.startCooldown();
-                this.numberOfEnemies--;
             }
         };
         async spawnEnemies() {
-            let nextSpawnPosition = this.enemySpawnpoints[this.counter % 4].mtxLocal.translation;
+            let nextSpawnPosition = this.enemySpawnpoints[this.counter % 3].mtxLocal.translation;
             this.counter++;
             this.enemyPrefab.mtxLocal.translation = nextSpawnPosition;
+            this.spawnCooldown.startCooldown();
+            this.numberOfEnemies--;
+            this.setHTMLText(this.numberOfEnemies);
             let instance = await ƒ.Project.createGraphInstance(this.enemyPrefab);
             TestGame.graph.addChild(instance);
             ƒ.Project.dispatchEvent(new CustomEvent("SetTarget"));
             TestGame.scanCollider();
+        }
+        setHTMLText(_number) {
+            this.numberEnemiesHTML.innerText = _number.toString();
         }
     }
     Script.ComponentSpawner = ComponentSpawner;
@@ -676,12 +701,24 @@ var Entity;
 })(Entity || (Entity = {}));
 var Entity;
 (function (Entity) {
-    class Health {
+    var ƒ = FudgeCore;
+    class Health extends ƒ.Mutable {
         maxHealth;
         currentHealth;
         constructor(_maxHealth) {
+            super();
             this.maxHealth = _maxHealth;
             this.currentHealth = this.maxHealth;
+        }
+        serialize() {
+            return this.getMutator();
+        }
+        async deserialize(_serialization) {
+            this.mutate(_serialization);
+            return this;
+        }
+        reduceMutator(_mutator) {
+            return;
         }
         getDamage(_damage) {
             this.currentHealth -= _damage;
